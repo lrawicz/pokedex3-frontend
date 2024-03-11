@@ -54,13 +54,11 @@ export const SelectMultiCheck: React.FC<params> = ({name,span=6, urlSource=`${pr
           </>
     }]
     return (
-        <Col  className="gutter-row"  span={span} >
-            <Collapse 
-                items={items}  
-                defaultActiveKey={[]}  
-                onChange={()=>setEnable(!enable)}
-                style={enable?{backgroundColor: '#44bba4'}:{}}
-                />
-        </Col>
+        <Collapse 
+            items={items}  
+            defaultActiveKey={[]}  
+            onChange={()=>setEnable(!enable)}
+            style={enable?{backgroundColor: '#44bba4'}:{}}
+            />
     )
 }

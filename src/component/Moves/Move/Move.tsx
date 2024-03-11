@@ -5,6 +5,13 @@ import { useState } from "react";
 
 export const Move: React.FC = () => {
     let [selectPokemonType, setSelectPokemonType] = useState([])
+
+    let [selectMovesName, setSelectMovesName] = useState([])
+    let [selectDamageClass, setSelectDamageClass] = useState([])
+    let [selectTargetTypes, setSelectTargetTypes] = useState([])
+    let [selectAilments, setSelectAilments] = useState([])
+
+
     const columns = [
         {title: 'Name',dataIndex: 'name',key: 'name',},
         {title: 'power',dataIndex: 'power',key: 'power'},
@@ -61,23 +68,38 @@ export const Move: React.FC = () => {
 
     return(<>
     <Row >
-        
-    <SelectMultiCheck name="posible names" span={12}/>
+    <Col span={24} children={
+    <SelectMultiCheck name="posible names" span={12}
+      urlSource={`${process.env.REACT_APP_API_URL}/moves/getAllNames`}
+      selected={selectMovesName} setSelected={setSelectMovesName}
+    />}
+    />
 
     </Row>
     <Row >
         <InputNumberCheck name="power"/>
-        <SelectMultiCheck name="type"
-          urlSource={`${process.env.REACT_APP_API_URL}/pokemon/types`}
-          selected={selectPokemonType} setSelected={setSelectPokemonType}
+        <Col span={6} children={
+          <SelectMultiCheck name="type"
+            urlSource={`${process.env.REACT_APP_API_URL}/pokemon/types`}
+            selected={selectPokemonType} setSelected={setSelectPokemonType}
+          />}
         />
         <InputNumberCheck name="accuracy"/>
-        <SelectMultiCheck name="damageClass"/>
-
+        <Col span={6} children={
+          <SelectMultiCheck name="damageClass"
+              urlSource={`${process.env.REACT_APP_API_URL}/moves/getDamageClass`}
+              selected={selectDamageClass} setSelected={setSelectDamageClass}
+          />}
+        />
     </Row>
 
     <Row >
-        <SelectMultiCheck name="target"/>
+        <Col span={6} children={
+          <SelectMultiCheck name="target"
+            urlSource={`${process.env.REACT_APP_API_URL}/moves/getTargetTypes`}
+            selected={selectTargetTypes} setSelected={setSelectTargetTypes}
+          />
+        }/>
         <InputNumberCheck name="priority"/>
         <InputNumberCheck name="CritRate"/>
         <InputNumberCheck name="pp"/>
@@ -98,10 +120,16 @@ export const Move: React.FC = () => {
         <InputNumberCheck name="flinchChance"/>
     </Row>
     <Row>
-        <InputNumberCheck name="statChance"/>
+          <Col span={6} children={
+            <SelectMultiCheck name="ailment"
+              urlSource={`${process.env.REACT_APP_API_URL}/moves/getAilments`}
+              selected={selectAilments} setSelected={setSelectAilments}
+            />}
+          />
         <InputNumberCheck name="ailmentChance"/>
-        <SelectMultiCheck name="ailment"/>
         <InputNumberCheck name="statChanges"/>
+        <InputNumberCheck name="statChance"/>
+
     </Row>
     <Row >
         <Collapse items={items} style={{width:"100%"}} >

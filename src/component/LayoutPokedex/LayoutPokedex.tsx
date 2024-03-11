@@ -36,6 +36,7 @@ const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOu
 
 const LayoutPokedex: React.FC = () => {
   let [generation,setGeneration] = useState(9)
+  let [abilities, setAbilities] = useState([])
   
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -98,7 +99,7 @@ const LayoutPokedex: React.FC = () => {
               {key: 'pokemon', label: 'pokemon'},
               {key: 'STATS', label: 'STATS', children: <STATS/>},
               {key: 'moves', label: 'moves', children: <Moves/>},
-              {key: 'Abilities', label: 'Abilities', children: <Abilities/>},
+              {key: 'Abilities', label: 'Abilities', children: <Abilities abilities={abilities} setAbilities={setAbilities}/>},
             ]}
             />
 
