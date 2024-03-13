@@ -1,7 +1,8 @@
 import { Checkbox, Col, Collapse, Flex, Input, InputNumber, Row, Slider, Table } from "antd"
 import { InputNumberCheck } from "../../inputs/InputNumberCheck/InputNumberCheck";
 import { SelectMultiCheck } from "../../inputs/SelectMultiCheck/SelectMultiCheck";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { RangedCollapse } from "../../inputs/RangedCollapse/RangedCollapse";
 
 export const Move: React.FC = () => {
     let [selectPokemonType, setSelectPokemonType] = useState([])
@@ -10,8 +11,25 @@ export const Move: React.FC = () => {
     let [selectDamageClass, setSelectDamageClass] = useState([])
     let [selectTargetTypes, setSelectTargetTypes] = useState([])
     let [selectAilments, setSelectAilments] = useState([])
+    let [data,setData] = useState([{}])
+    let [moveList,setMoveList] = useState([{}])
 
 
+    useEffect(()=>{
+      fetch(`${process.env.REACT_APP_API_URL}/moves?filter=${JSON.stringify(data)}`).then((res)=>res.json()).then((moves)=>{
+        setMoveList(moves)
+      })},[data])
+    let callFromChild = (name:string,type:string, value:any)=>{ 
+        let tmp
+        if (value){
+          tmp = {...data, [name]: {type:type,value:value}}
+        }else{
+          tmp = {...data}
+          delete tmp[name]
+        }
+        console.log(tmp)
+        setData(tmp)
+    }
     const columns = [
         {title: 'Name',dataIndex: 'name',key: 'name',},
         {title: 'power',dataIndex: 'power',key: 'power'},
@@ -37,7 +55,7 @@ export const Move: React.FC = () => {
         {
           key: '1',
           label: 'Results',
-          children: <Table key={"id"} dataSource={dataSource} columns={columns}/>,
+          children: <Table key={"id"} dataSource={moveList} columns={columns}/>,
         },
 
       ];
@@ -61,35 +79,15 @@ export const Move: React.FC = () => {
         
     //move_moveGrups Json
         //metaCategory String?
-
-
-
-
-
     return(<>
-    <Row >
-    <Col span={24} children={
-    <SelectMultiCheck name="posible names" span={12}
-      urlSource={`${process.env.REACT_APP_API_URL}/moves/getAllNames`}
-      selected={selectMovesName} setSelected={setSelectMovesName}
-    />}
-    />
-
+    <Row>
+      <Table style={{width:"100%"}} key={"id"} dataSource={moveList} columns={columns} />
     </Row>
     <Row >
-        <InputNumberCheck name="power"/>
-        <Col span={6} children={
-          <SelectMultiCheck name="type"
-            urlSource={`${process.env.REACT_APP_API_URL}/pokemon/types`}
-            selected={selectPokemonType} setSelected={setSelectPokemonType}
-          />}
-        />
-        <InputNumberCheck name="accuracy"/>
-        <Col span={6} children={
-          <SelectMultiCheck name="damageClass"
-              urlSource={`${process.env.REACT_APP_API_URL}/moves/getDamageClass`}
-              selected={selectDamageClass} setSelected={setSelectDamageClass}
-          />}
+        <Col span={6} children={<InputNumberCheck name="power" callback={callFromChild}/>}/>
+        <Col span={6} children={ <SelectMultiCheck name="type" urlSource={`${process.env.REACT_APP_API_URL}/pokemon/types`} selected={selectPokemonType} setSelected={setSelectPokemonType} />}/>
+        <Col span={6} children={<InputNumberCheck name="accuracy" callback={callFromChild}/>}/>
+        <Col span={6} children={ <SelectMultiCheck name="damageClass" urlSource={`${process.env.REACT_APP_API_URL}/moves/getDamageClass`} selected={selectDamageClass} setSelected={setSelectDamageClass}/>}
         />
     </Row>
 
@@ -100,24 +98,22 @@ export const Move: React.FC = () => {
             selected={selectTargetTypes} setSelected={setSelectTargetTypes}
           />
         }/>
-        <InputNumberCheck name="priority"/>
-        <InputNumberCheck name="CritRate"/>
-        <InputNumberCheck name="pp"/>
+        <Col span={6} children={<InputNumberCheck name="priority" min={-7} max={8} callback={callFromChild}/>} />
+        <Col span={6} children={<InputNumberCheck name="CritRate" min={0} max={100} callback={callFromChild}/>}/>
+        <Col span={6} children={<InputNumberCheck name="pp"/>}/>
         
     </Row>
     <Row>
-        <InputNumberCheck name="minHits"/>
-        <InputNumberCheck name="maxHits"/>
-        <InputNumberCheck name="minTurns"/>
-        <InputNumberCheck name="maxTurns"/>
-
-
+        <Col span={6} children={<InputNumberCheck name="minHits" min={1} max={10} callback={callFromChild}/>}/>
+        <Col span={6} children={<InputNumberCheck name="maxHits" callback={callFromChild} min={1} max={10}/>}/>
+        <Col span={6} children={<InputNumberCheck name="minTurns" callback={callFromChild} min={1} max={20}/>}/>
+        <Col span={6} children={<InputNumberCheck name="maxTurns" callback={callFromChild} min={1} max={20}/>}/>
     </Row>
     <Row>
-        <InputNumberCheck name="drain (%)"/>
-        <InputNumberCheck name="healing"/>
-        <InputNumberCheck name="recoil (%)"/>
-        <InputNumberCheck name="flinchChance"/>
+    <Col span={6} children={<InputNumberCheck name="drain  callback={callFromChild}(%)" min={0} max={100}/>}/>
+        <Col span={6} children={<InputNumberCheck name="healing" callback={callFromChild} />}/>
+        <Col span={6} children={<InputNumberCheck name="recoil  callback={callFromChild}(%)" min={0} max={100}/>}/>
+        <Col span={6} children={<InputNumberCheck name="flinchChance" callback={callFromChild} min={0} max={100}/>}/>
     </Row>
     <Row>
           <Col span={6} children={
@@ -126,17 +122,10 @@ export const Move: React.FC = () => {
               selected={selectAilments} setSelected={setSelectAilments}
             />}
           />
-        <InputNumberCheck name="ailmentChance"/>
-        <InputNumberCheck name="statChanges"/>
-        <InputNumberCheck name="statChance"/>
+        <Col span={6} children={<InputNumberCheck name="ailmentChance" callback={callFromChild} min={0} max={100}/>}/>
+        <Col span={6} children={<InputNumberCheck name="statChanges" callback={callFromChild} />}/> {/*revisar*/}
+        <Col span={6} children={<InputNumberCheck name="statChance" callback={callFromChild} min={0} max={100}/>}/>
 
     </Row>
-    <Row >
-        <Collapse items={items} style={{width:"100%"}} >
-            <Table style={{width:"100%"}} key={"id"} dataSource={dataSource} columns={columns}/>
-        </Collapse>
-
-
-    </Row>        
     </>)
 }
