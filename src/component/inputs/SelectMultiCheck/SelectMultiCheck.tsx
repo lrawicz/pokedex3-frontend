@@ -3,7 +3,8 @@ import { BaseOptionType } from "antd/es/select"
 import { useEffect, useState } from "react"
 
 type params = {
-    name:string,
+    key:string,
+    label:string,
     span?:number,
     urlSource?:string,
     selected?: string[],
@@ -11,13 +12,23 @@ type params = {
     callback?:any
 }
 
-export const SelectMultiCheck: React.FC<params> = ({name,span=6, urlSource=`${process.env.API_URL}/effects`,selected,setSelected,callback}) =>{
+export const SelectMultiCheck: React.FC<params> = ({key,label,span=6, urlSource=`${process.env.API_URL}/effects`,selected,setSelected,callback}) =>{
     
     let [enable, setEnable]= useState(false)
     let [options, setOptions]= useState<BaseOptionType[]>([])
 
-    let onSelectChange = (value:any)=>{
-        callback(name,"ids",value)
+    let onSelectChange = (value:any,key:any)=>{
+        setSelected(value)
+        callback(key,"ids",value)
+    }
+    let collapseOnChange = (value:any)=>{
+        if(JSON.stringify(value) == "[]"){
+            setEnable(false)
+            callback(key,false)
+        }else{
+            setEnable(true)
+            callback(key,"ids",false)
+        }
     }
     useEffect(()=>{
         fetch(urlSource,{
@@ -45,16 +56,14 @@ export const SelectMultiCheck: React.FC<params> = ({name,span=6, urlSource=`${pr
     
     let items:any = [{
         key: '1',
-        label: name,
+        label: label,
         children: 
           <>         
            <Select
            disabled={!enable}
             mode="multiple"
             value={selected}
-            onChange={(value,key)=>{
-                setSelected(value)
-            }}
+            onChange={onSelectChange}
             style={{ minWidth: '100%' }}
             placeholder="Please select"
             options={options}/>
@@ -64,7 +73,7 @@ export const SelectMultiCheck: React.FC<params> = ({name,span=6, urlSource=`${pr
         <Collapse 
             items={items}  
             defaultActiveKey={[]}  
-            onChange={()=>setEnable(!enable)}
+            onChange={collapseOnChange}
             style={enable?{backgroundColor: '#44bba4'}:{}}
             />
     )

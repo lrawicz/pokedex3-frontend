@@ -35,7 +35,7 @@ export const Move: React.FC = () => {
         {title: 'power',dataIndex: 'power',key: 'power'},
         {title: 'type',dataIndex: 'type',key: 'type',},
         {title: 'damageClass',dataIndex: 'damageClass',key: 'damageClass',},
-      ];
+    ];
       
     const dataSource = [
         {
@@ -50,7 +50,7 @@ export const Move: React.FC = () => {
           power: 42,
           type: '10 Downing Street',
         },
-      ];
+    ];
     const items: any = [
         {
           key: '1',
@@ -58,48 +58,48 @@ export const Move: React.FC = () => {
           children: <Table key={"id"} dataSource={moveList} columns={columns}/>,
         },
 
-      ];
+    ];
 
     let paremetersDOM = ()=>{
       return(
         <>        
           <Row>
-            <Col span={6} children={<InputNumberCheck name="power" callback={callFromChild}/>}/>
-            <Col span={6} children={ <SelectMultiCheck name="type" callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/pokemon/types`} selected={selectPokemonType} setSelected={setSelectPokemonType} />}/>
-            <Col span={6} children={<InputNumberCheck name="accuracy" callback={callFromChild}/>}/>
-            <Col span={6} children={ <SelectMultiCheck name="damageClass" callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/moves/getDamageClass`} selected={selectDamageClass} setSelected={setSelectDamageClass}/>}/>
+            <Col span={6} children={<InputNumberCheck key="power" label="power" callback={callFromChild}/>}/>
+            <Col span={6} children={ <SelectMultiCheck key="type" label="type"  callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/pokemon/types`} selected={selectPokemonType} setSelected={setSelectPokemonType} />}/>
+            <Col span={6} children={<InputNumberCheck key="accuracy" label="accuracy" step={5} callback={callFromChild} />}/>
+            <Col span={6} children={ <SelectMultiCheck key="damageClass" label="damageClass" callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/moves/getDamageClass`} selected={selectDamageClass} setSelected={setSelectDamageClass}/>}/>
           </Row>
 
           <Row>
-            <Col span={6} children={<SelectMultiCheck name="target" callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/moves/getTargetTypes`} selected={selectTargetTypes} setSelected={setSelectTargetTypes}/>}/>
-            <Col span={6} children={<InputNumberCheck name="priority" min={-7} max={8} callback={callFromChild}/>} />
-            <Col span={6} children={<InputNumberCheck name="CritRate" min={0} max={100} callback={callFromChild}/>}/>
-            <Col span={6} children={<InputNumberCheck name="pp"  callback={callFromChild}/> }/>
+            <Col span={6} children={<SelectMultiCheck key="target" label="target" callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/moves/getTargetTypes`} selected={selectTargetTypes} setSelected={setSelectTargetTypes}/>}/>
+            <Col span={6} children={<InputNumberCheck key="priority" label="priority" step={1} min={-7} max={8} callback={callFromChild}/>} />
+            <Col span={6} children={<InputNumberCheck key="CritRate" label="CritRate" min={0} max={100} callback={callFromChild}/>}/>
+            <Col span={6} children={<InputNumberCheck key="pp" label="pp"  callback={callFromChild}/> }/>
           </Row>
           
           <Row>
-            <Col span={6} children={<InputNumberCheck name="minHits" min={1} max={10} callback={callFromChild}/>}/>
-            <Col span={6} children={<InputNumberCheck name="maxHits" callback={callFromChild} min={1} max={10}/>}/>
-            <Col span={6} children={<InputNumberCheck name="minTurns" callback={callFromChild} min={1} max={20}/>}/>
-            <Col span={6} children={<InputNumberCheck name="maxTurns" callback={callFromChild} min={1} max={20}/>}/>
+            <Col span={6} children={<InputNumberCheck key="minHits" label="minHits"  min={1} max={10} callback={callFromChild}/>}/>
+            <Col span={6} children={<InputNumberCheck key="maxHits" label="maxHits"  callback={callFromChild} min={1} max={10}/>}/>
+            <Col span={6} children={<InputNumberCheck key="minTurns" label="minTurns"  callback={callFromChild} min={1} max={20}/>}/>
+            <Col span={6} children={<InputNumberCheck key="maxTurns" label="maxTurns"  callback={callFromChild} min={1} max={20}/>}/>
           </Row>
     
           <Row>
-            <Col span={6} children={<InputNumberCheck name="drain %"  callback={callFromChild} min={0} max={100}/>}/>
-            <Col span={6} children={<InputNumberCheck name="healing" callback={callFromChild} />}/>
-            <Col span={6} children={<InputNumberCheck name="recoil (%)"  callback={callFromChild} min={0} max={100}/>}/>
-            <Col span={6} children={<InputNumberCheck name="flinchChance" callback={callFromChild} min={0} max={100}/>}/>
+            <Col span={6} children={<InputNumberCheck key="drain" label="drain" callback={callFromChild} min={0} max={100}/>}/>
+            <Col span={6} children={<InputNumberCheck key="healing" label="healing" callback={callFromChild} />}/>
+            <Col span={6} children={<InputNumberCheck key="recoil" label="recoil"  callback={callFromChild} min={0} max={100}/>}/>
+            <Col span={6} children={<InputNumberCheck key="maxTurns" label="flinchChance" callback={callFromChild} min={0} max={100}/>}/>
           </Row>
 
           <Row>
-            <Col span={6} children={<SelectMultiCheck name="ailment" callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/moves/getAilments`}selected={selectAilments} setSelected={setSelectAilments}/>}/>
-            <Col span={6} children={<InputNumberCheck name="ailmentChance" callback={callFromChild} min={0} max={100}/>}/>
-            <Col span={6} children={<InputNumberCheck name="statChanges" callback={callFromChild} />}/> {/*revisar*/}
-            <Col span={6} children={<InputNumberCheck name="statChance" callback={callFromChild} min={0} max={100}/>}/>
+            <Col span={6} children={<SelectMultiCheck key="ailment" label="ailment"  callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/moves/getAilments`}selected={selectAilments} setSelected={setSelectAilments}/>}/>
+            <Col span={6} children={<InputNumberCheck key="ailmentChance" label="ailmentChance" callback={callFromChild} min={0} max={100}/>}/>
+            <Col span={6} children={<InputNumberCheck key="statChanges" label="statChanges"  callback={callFromChild} />}/> {/*revisar*/}
+            <Col span={6} children={<InputNumberCheck key="statChance" label="statChance" callback={callFromChild} min={0} max={100}/>}/>
           </Row>
     </>
       )
-      }
+    }
     ///////
     //review
         //statChanges Json  //statChanges: data.stat_changes,

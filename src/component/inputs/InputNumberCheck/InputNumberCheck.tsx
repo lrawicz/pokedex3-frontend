@@ -3,44 +3,46 @@ import { BaseOptionType } from "antd/es/select"
 import { useState } from "react"
 
 type params = {
-    name:string,
+    label:string,
+    key:string,
     max?:number,
     min?:number
+    callback?:any,
+    step?: number,
     defaultValue?:number[]
-    callback?:any
 }
-export const InputNumberCheck: React.FC<params> = ({name="asd",max=255,min=0,defaultValue,callback}) => {
+export const InputNumberCheck: React.FC<params> = ({label,key,max=255,min=0,callback,step=5,defaultValue}) => {
     
     let [minValue,setMinValue] = useState(defaultValue?defaultValue[defaultValue[0]]:min)
     let [maxValue,setMaxValue] = useState(defaultValue?defaultValue[defaultValue[1]]:max)
     let changeMin = (value:number|null)=>{
-        callback(name,"value",[value,maxValue])
+        callback(key,"value",[value,maxValue])
         setMinValue(Number(value))
     }
     let changeMax = (value:number|null)=>{
-        callback(name,"value",[maxValue,value])
+        callback(key,"value",[maxValue,value])
         setMaxValue(Number(value))
     }
     let collapseOnChange = (value:any)=>{
         if(JSON.stringify(value) == "[]"){
             setDisable(false)
-            callback(name,false)
+            callback(key,false)
         }else{
             setDisable(true)
-            callback(name,"value",[minValue,maxValue])
+            callback(key,"value",[minValue,maxValue])
         }
     }
     let [disable, setDisable]= useState(false)
     let items:any = [{
         key: '1',
-        label: name,
+        label: label,
         children: 
           <>    
           <Row>
             min
-              <InputNumber onChange={(value)=>{changeMin(value)}} min={min} max={max} step={5} disabled={!disable} value={minValue}/>
+              <InputNumber onChange={(value)=>{changeMin(value)}} min={min} max={max} step={step} disabled={!disable} value={minValue}/>
               -
-              <InputNumber onChange={(value)=>{changeMax(value)}}  min={min} max={max} step={5} disabled={!disable} value={maxValue}/>
+              <InputNumber onChange={(value)=>{changeMax(value)}}  min={min} max={max} step={step} disabled={!disable} value={maxValue}/>
               max
           </Row>
 
