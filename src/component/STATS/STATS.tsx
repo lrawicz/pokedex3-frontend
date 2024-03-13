@@ -1,5 +1,6 @@
 import { Flex, Row, Slider } from "antd"
 import type { SliderSingleProps } from 'antd';
+import { RangedCollapse } from "../inputs/RangedCollapse/RangedCollapse";
 export const STATS: React.FC = () => {
     
     const marks: SliderSingleProps['marks'] = {
@@ -17,31 +18,13 @@ export const STATS: React.FC = () => {
     return(
         
         <>
-        <Flex align="top">
-        hp:<Slider range defaultValue={[80, 120]} max={255} min={0} style={{width:"40vw"}} marks={marks} step={5}   />
-        </Flex>
-        <Flex align="top">
-        attack: <Slider range defaultValue={[80, 120]} max={255} min={0} style={{width:"40vw"}} marks={marks} step={5}   />
-        </Flex>
-        <Flex align="top">
-        defense:
-        <Slider range defaultValue={[80, 120]} max={255} min={0} style={{width:"40vw"}} marks={marks} step={5}   />
-        </Flex>
-
-        <Flex align="top">
-            special-attack:
-        <Slider range defaultValue={[80, 120]} max={255} min={0} style={{width:"40vw"}} marks={marks} step={5}   />
-        </Flex>
+            <RangedCollapse name="hp" min={0} max={255} marks={[0,60,80,120,140,255]}/>
+            <RangedCollapse name="attack" min={0} max={255} marks={[0,60,80,120,140,255]}/>
+            <RangedCollapse name="defense" min={0} max={255} marks={[0,60,80,120,140,255]}/>
+            <RangedCollapse name="special-attack" min={0} max={255} marks={[0,60,80,120,140,255]}/>
+            <RangedCollapse name="special-defense" min={0} max={255} marks={[0,60,80,120,140,255]}/>
+            <RangedCollapse name="speed" min={0} max={255} marks={[0,60,80,120,140,255]}/>
         
-        <Flex align="top">
-            speciañ-defense:
-        <Slider range defaultValue={[80, 120]} max={255} min={0} style={{width:"40vw"}} marks={marks} step={5}   />
-        </Flex>
-
-        <Flex align="top">
-            speed:
-        <Slider range defaultValue={[80, 120]} max={255} min={0} style={{width:"40vw"}} marks={marks} step={5}   />
-        </Flex>
 
         </>
     )

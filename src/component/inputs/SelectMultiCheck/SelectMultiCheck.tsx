@@ -7,13 +7,18 @@ type params = {
     span?:number,
     urlSource?:string,
     selected?: string[],
-    setSelected?: any
+    setSelected?: any,
+    callback?:any
 }
 
-export const SelectMultiCheck: React.FC<params> = ({name,span=6, urlSource=`${process.env.API_URL}/effects`,selected,setSelected}) =>{
+export const SelectMultiCheck: React.FC<params> = ({name,span=6, urlSource=`${process.env.API_URL}/effects`,selected,setSelected,callback}) =>{
     
     let [enable, setEnable]= useState(false)
     let [options, setOptions]= useState<BaseOptionType[]>([])
+
+    let onSelectChange = (value:any)=>{
+        callback(name,"ids",value)
+    }
     useEffect(()=>{
         fetch(urlSource,{
             method: 'GET',
