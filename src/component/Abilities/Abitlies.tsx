@@ -45,15 +45,15 @@ export const Abilities: React.FC<any> = ({sendToParent}) => {
             
             <Row>
               <Col span={8}>
-                <SelectMultiCheck name={"trigger"} urlSource={`${process.env.REACT_APP_API_URL}/triggers`}
+                <SelectMultiCheck key={"trigger"} label={"trigger"} urlSource={`${process.env.REACT_APP_API_URL}/triggers`}
                   selected={selectTrigger} setSelected={setSelectTrigger}/>
               </Col>
               <Col span={8}>
-                <SelectMultiCheck name={"target"} urlSource={`${process.env.REACT_APP_API_URL}/targets`}
+                <SelectMultiCheck key={"target"} label={"target"} urlSource={`${process.env.REACT_APP_API_URL}/targets`}
                   selected={selectTarget} setSelected={setSelectTarget}/>
               </Col>
               <Col span={8}>
-              <SelectMultiCheck name={"effect"} urlSource={`${process.env.REACT_APP_API_URL}/effects`}
+              <SelectMultiCheck key={"effect"} label={"effect"} urlSource={`${process.env.REACT_APP_API_URL}/effects`}
                   selected={selectEffect} setSelected={setSelectEffect}/>
 
               </Col>
