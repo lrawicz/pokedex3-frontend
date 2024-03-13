@@ -29,7 +29,7 @@ export const SelectMultiCheck: React.FC<params> = ({name,span=6, urlSource=`${pr
                 if(typeof data[0] == "string"){
                     tmp_func = (item:string)=>{tmp_options =([...tmp_options, {label: item, value: item}])}
                 }if (typeof data[0] == "object" ) {
-                    tmp_func = (item:any)=>{tmp_options =([...tmp_options, {label: item.name, value: item.name}])}
+                    tmp_func = (item:any)=>{tmp_options =([...tmp_options, {label: item.name, value: item.id}])}
                     
                 }{
                 data.map(tmp_func)
@@ -47,7 +47,9 @@ export const SelectMultiCheck: React.FC<params> = ({name,span=6, urlSource=`${pr
            disabled={!enable}
             mode="multiple"
             value={selected}
-            onChange={(value)=>setSelected(value)}
+            onChange={(value,key)=>{
+                setSelected(value)
+            }}
             style={{ minWidth: '100%' }}
             placeholder="Please select"
             options={options}/>
