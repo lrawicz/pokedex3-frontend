@@ -1,0 +1,21 @@
+.poke-item-list {
+    font-size: 16px; /* Tamaño de fuente por defecto */
+    transition: font-size 0.2s; /* Transición suave */
+  }
+
+  /* Cambio de tamaño al hacer hover */
+  .poke-item-list:hover {
+    font-size: 20px; /* Tamaño de fuente al hacer hover */
+       
+  }
+
+
+  .poke-img {
+    width: 30%;
+    transition: width 0.4s; /* Transición suave */
+  }
+
+  /* Cambio de tamaño al hacer hover */
+  .poke-item-list:hover .poke-img {
+    width: 50%;
+  }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, List, Menu, Select, theme } from 'antd';
@@ -9,10 +9,10 @@ import Tabs from 'antd/es/tabs'
 import { STATS } from '../STATS/STATS';
 import { Moves } from '../Moves/Moves';
 import { Abilities } from '../Abilities/Abitlies';
+import './LayoutPokedex.css'
 
 const { Header, Content, Sider } = Layout;
-
-
+// load css file
 
 const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
   (icon, index) => {
@@ -35,13 +35,28 @@ const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOu
 );
 
 const LayoutPokedex: React.FC = () => {
+  let [abilities,setAbilities] = useState([])
+
   let [generation,setGeneration] = useState(9)
-  let [abilities, setAbilities] = useState([])
-  
+  let [pokemons,setPokemons] = useState([])
+
+  const sendToParent = (value:any) => {
+    setAbilities(value)
+  }
+  let updatePokemons = async()=>{
+    let url = `${process.env.REACT_APP_API_URL}/pokemons`
+    url += "?filter=" + JSON.stringify({
+      abilities: abilities,
+       generation:generation
+    })
+    fetch(url).then(res => res.json()).then(data => {
+      setPokemons(data)
+    })
+  }
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-
+  useEffect(() => {updatePokemons()}, [generation, abilities])
   return (
     <Layout>
       <Header style={{ display: 'flex', alignItems: 'center' }}>
@@ -99,7 +114,8 @@ const LayoutPokedex: React.FC = () => {
               {key: 'pokemon', label: 'pokemon'},
               {key: 'STATS', label: 'STATS', children: <STATS/>},
               {key: 'moves', label: 'moves', children: <Moves/>},
-              {key: 'Abilities', label: 'Abilities', children: <Abilities abilities={abilities} setAbilities={setAbilities}/>},
+              {key: 'Abilities', label: 'Abilities', children: 
+              <Abilities sendToParent={sendToParent}/>},
             ]}
             />
 
@@ -111,98 +127,20 @@ const LayoutPokedex: React.FC = () => {
         }
 
         <Sider  
-        trigger={null} style={{overflow: 'auto',height:"90vh", background:"grey"}}collapsible collapsed={true}>
+        trigger={null} style={{overflow: 'auto',height:"90vh", width:"20%", background:"grey"}}collapsible collapsed={false}>
           <List>
-            
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 3</List.Item>
-            <List.Item>item 1</List.Item>
-            <List.Item>item 2</List.Item>
-            <List.Item>item 100</List.Item>
+            {pokemons.map((pokemon:any) => 
+            <List.Item className='poke-item-list'>
+                <img  className='poke-img'
+                src={`./sprites2/${pokemon.name}.png`}/>              
+              {pokemon.id}-{pokemon.name}
+              </List.Item>)}
           </List>
         </Sider>
       </Layout>
     </Layout>
   );
 };
+//
 
 export default LayoutPokedex;
