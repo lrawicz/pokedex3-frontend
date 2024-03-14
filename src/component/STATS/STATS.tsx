@@ -24,11 +24,9 @@ export const STATS: React.FC<params> = ({callback}) => {
             <RangedCollapse dbName="hp" label="hp" min={0} max={255} marks={[0,60,80,120,140,255]} callback={callFromChild}/>
             <RangedCollapse dbName="attack" label="attack" min={0} max={255} marks={[0,60,80,120,140,255]} callback={callFromChild}/>
             <RangedCollapse dbName="defense" label="defense" min={0} max={255} marks={[0,60,80,120,140,255]} callback={callFromChild}/>
-            <RangedCollapse dbName="special-attack" label="special-attack" min={0} max={255} marks={[0,60,80,120,140,255]} callback={callFromChild}/>
-            <RangedCollapse dbName="special-defense" label="special-defense" min={0} max={255} marks={[0,60,80,120,140,255]} callback={callFromChild}/>
+            <RangedCollapse dbName="specialAttack" label="special-attack" min={0} max={255} marks={[0,60,80,120,140,255]} callback={callFromChild}/>
+            <RangedCollapse dbName="specialDefense" label="special-defense" min={0} max={255} marks={[0,60,80,120,140,255]} callback={callFromChild}/>
             <RangedCollapse dbName="speed" label="speed" min={0} max={255} marks={[0,60,80,120,140,255]} callback={callFromChild}/>
-        
-
         </>
     )
 }
