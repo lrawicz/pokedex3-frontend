@@ -36,13 +36,14 @@ const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOu
 
 const LayoutPokedex: React.FC = () => {
   let [filterData,setFilterData] = useState({})
-  let [abilities,setAbilities] = useState([])
 
   let [generation,setGeneration] = useState(9)
   let [pokemons,setPokemons] = useState([])
 
   const sendToParent = (key:string,value:any) => {
-    setFilterData({...filterData, [key]: value})
+    console.log(key, value)
+    let tmp  = {...filterData, [key]: value}
+    setFilterData(tmp)
   }
   let updatePokemons = async()=>{
     let url = `${process.env.REACT_APP_API_URL}/pokemons`
@@ -54,7 +55,9 @@ const LayoutPokedex: React.FC = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-  useEffect(() => {updatePokemons()}, [filterData, abilities])
+
+  useEffect(() => {updatePokemons()}, [filterData])
+
   return (
     <Layout>
       <Header style={{ display: 'flex', alignItems: 'center' }}>
@@ -110,7 +113,7 @@ const LayoutPokedex: React.FC = () => {
             <Tabs
               items={[
                 {key: 'pokemon', label: 'pokemon'},
-                {key: 'STATS', label: 'STATS', children: <STATS/>},
+                {key: 'STATS', label: 'STATS', children: <STATS callback={sendToParent}/>},
                 {key: 'moves', label: 'moves', children: <Moves callback={sendToParent}/>},
                 {key: 'abilities', label: 'Abilities', children:  <Abilities callback={sendToParent} generation={generation}/>},
               ]}

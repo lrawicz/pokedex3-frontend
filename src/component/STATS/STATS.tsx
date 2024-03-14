@@ -1,8 +1,12 @@
 import { Flex, Row, Slider } from "antd"
 import type { SliderSingleProps } from 'antd';
 import { RangedCollapse } from "../inputs/RangedCollapse/RangedCollapse";
-import { useState } from "react";
-export const STATS: React.FC = () => {
+import { useEffect, useState } from "react";
+type params = {
+  callback:any
+}
+
+export const STATS: React.FC<params> = ({callback}) => {
     let [data,setData] = useState({})
     let callFromChild = (key:string,type:string, value:any)=>{ 
         let tmp
@@ -12,8 +16,8 @@ export const STATS: React.FC = () => {
           tmp = {...data}
           delete tmp[key]
         }
-        console.log(tmp)
         setData(tmp)
+        callback("STATS",tmp)
     }
     return(
         <>
