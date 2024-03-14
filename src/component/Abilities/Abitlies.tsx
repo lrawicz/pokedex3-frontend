@@ -4,17 +4,17 @@ import { SelectMultiCheck } from "../inputs/SelectMultiCheck/SelectMultiCheck"
 import { useEffect, useState } from "react"
 import Column from "antd/es/table/Column"
 
-export const Abilities: React.FC<any> = ({ callback}) => {
-    
+export const Abilities: React.FC<any> = ({ callback,generation}) => {
+  
     let [abilities, setAbilities] = useState([])
     let [selectedAbilities, setSelectedAbilities] = useState([])
     const [value, setValue] = useState('');
     const rowSelection = {};
     let [data,setData] = useState({})
-    let callFromChild = (key:string,type:string, value:any)=>{ 
+    let callFromChild = (key:string,type:string, value:any)=>{    
       let tmp
       if (value){
-        tmp = {...data, [key]: value}
+        tmp = {...data, [key]: value.map((item:any) => item.key)}
       }else{
         tmp = {...data}
         delete tmp[key]
@@ -23,20 +23,17 @@ export const Abilities: React.FC<any> = ({ callback}) => {
     }
 
     function refreshData(){
-        console.log(data)
-        let url = `${process.env.REACT_APP_API_URL}/abilities`
-        if(JSON.stringify(data)!= "{}" ){
-          url += `?filter=${JSON.stringify(data)}`
-        }
-        console.log(url)
-        fetch(url).then(res => res.json()).then(data => {
-            setAbilities(data)
-            let selected = data.map((ability:any) => ability.id)
-            setSelectedAbilities(selected)
-            callback("abilities",selected)
-        })
+      let tmp = {...data, generation: generation}
+      let url = `${process.env.REACT_APP_API_URL}/abilities?filter=${JSON.stringify(tmp)}`
+      console.log(url)
+      fetch(url).then(res => res.json()).then(data => {
+          setAbilities(data)
+          let selected = data.map((ability:any) => ability.id)
+          setSelectedAbilities(selected)
+          callback("abilities",selected)
+      })
     }
-    useEffect(() => {refreshData()}, [data])
+    useEffect(() => {refreshData()}, [data,generation])
     return(
         <>
         <Row>

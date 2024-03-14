@@ -77,7 +77,7 @@ const LayoutPokedex: React.FC = () => {
                 key:`${key+1}`, value: `${key+1}`, label: `generation ${key+1}`
               }))
             }
-          />  
+          />
           </Flex>
         </Menu>
       </Header>
@@ -112,7 +112,7 @@ const LayoutPokedex: React.FC = () => {
                 {key: 'pokemon', label: 'pokemon'},
                 {key: 'STATS', label: 'STATS', children: <STATS/>},
                 {key: 'moves', label: 'moves', children: <Moves callback={sendToParent}/>},
-                {key: 'abilities', label: 'Abilities', children:  <Abilities callback={sendToParent}/>},
+                {key: 'abilities', label: 'Abilities', children:  <Abilities callback={sendToParent} generation={generation}/>},
               ]}
             />
 
