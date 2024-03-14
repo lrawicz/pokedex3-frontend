@@ -10,7 +10,7 @@ type params = {
 export const Move:  React.FC<params>  = ({callback,moveId}) => {
     let [data,setData] = useState([{}])
     let [moveList,setMoveList] = useState([{}])
-
+    let [selectedMoves,setSelectedMoves] = useState([])
 
     useEffect(()=>{
       fetch(`${process.env.REACT_APP_API_URL}/moves?filter=${JSON.stringify(data)}`).then((res)=>res.json()).then((moves)=>{
@@ -125,9 +125,19 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
           rowKey={"id"}
           dataSource={moveList} columns={columns}
           scroll={{ x: 150, y: 500 }}
-
           rowSelection={{
-            type: "checkbox"
+            type: "checkbox",
+            selectedRowKeys: selectedMoves,
+            onSelect: (record:any, selected:any, selectedRows:any, nativeEvent:any) => {
+              let selectedRowKeys = selectedRows.map((row:any) => row.id);
+              callback("abilities",selectedRowKeys);
+              setSelectedMoves(selectedRowKeys)
+            }, 
+            onSelectAll: (selectedBool:Boolean, selectedRows:any, changeRows:any) => {
+              let selected:any =  selectedBool? moveList.map((row:any) => row.id): []
+              callback("abilities",selected);
+              setSelectedMoves(selected)
+            },
           }}
           
           />
