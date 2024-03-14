@@ -35,20 +35,18 @@ const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOu
 );
 
 const LayoutPokedex: React.FC = () => {
+  let [filterData,setFilterData] = useState({})
   let [abilities,setAbilities] = useState([])
 
   let [generation,setGeneration] = useState(9)
   let [pokemons,setPokemons] = useState([])
 
-  const sendToParent = (value:any) => {
-    setAbilities(value)
+  const sendToParent = (key:string,value:any) => {
+    setFilterData({...filterData, [key]: value})
   }
   let updatePokemons = async()=>{
     let url = `${process.env.REACT_APP_API_URL}/pokemons`
-    url += "?filter=" + JSON.stringify({
-      abilities: abilities,
-       generation:generation
-    })
+    url += "?filter=" + JSON.stringify(filterData)
     fetch(url).then(res => res.json()).then(data => {
       setPokemons(data)
     })
@@ -56,7 +54,7 @@ const LayoutPokedex: React.FC = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-  useEffect(() => {updatePokemons()}, [generation, abilities])
+  useEffect(() => {updatePokemons()}, [filterData, abilities])
   return (
     <Layout>
       <Header style={{ display: 'flex', alignItems: 'center' }}>
@@ -110,13 +108,12 @@ const LayoutPokedex: React.FC = () => {
           >
             
             <Tabs
-            items={[
-              {key: 'pokemon', label: 'pokemon'},
-              {key: 'STATS', label: 'STATS', children: <STATS/>},
-              {key: 'moves', label: 'moves', children: <Moves/>},
-              {key: 'Abilities', label: 'Abilities', children: 
-              <Abilities sendToParent={sendToParent}/>},
-            ]}
+              items={[
+                {key: 'pokemon', label: 'pokemon'},
+                {key: 'STATS', label: 'STATS', children: <STATS/>},
+                {key: 'moves', label: 'moves', children: <Moves callback={sendToParent}/>},
+                {key: 'abilities', label: 'Abilities', children:  <Abilities callback={sendToParent}/>},
+              ]}
             />
 
           </Content>

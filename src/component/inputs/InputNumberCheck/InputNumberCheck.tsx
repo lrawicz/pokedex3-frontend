@@ -4,32 +4,33 @@ import { useState } from "react"
 
 type params = {
     label:string,
-    key:string,
+    dbName:string,
     max?:number,
     min?:number
     callback?:any,
     step?: number,
     defaultValue?:number[]
 }
-export const InputNumberCheck: React.FC<params> = ({label,key,max=255,min=0,callback,step=5,defaultValue}) => {
+export const InputNumberCheck: React.FC<params> = ({label,dbName,max=255,min=0,callback,step=5,defaultValue}) => {
     
     let [minValue,setMinValue] = useState(defaultValue?defaultValue[defaultValue[0]]:min)
     let [maxValue,setMaxValue] = useState(defaultValue?defaultValue[defaultValue[1]]:max)
     let changeMin = (value:number|null)=>{
-        callback(key,"value",[value,maxValue])
+        console.log(dbName)
+        callback(dbName,"value",[value,maxValue])
         setMinValue(Number(value))
     }
     let changeMax = (value:number|null)=>{
-        callback(key,"value",[maxValue,value])
+        callback(dbName,"value",[maxValue,value])
         setMaxValue(Number(value))
     }
     let collapseOnChange = (value:any)=>{
         if(JSON.stringify(value) == "[]"){
             setDisable(false)
-            callback(key,false)
+            callback(dbName,false)
         }else{
             setDisable(true)
-            callback(key,"value",[minValue,maxValue])
+            callback(dbName,"value",[minValue,maxValue])
         }
     }
     let [disable, setDisable]= useState(false)
@@ -54,6 +55,6 @@ export const InputNumberCheck: React.FC<params> = ({label,key,max=255,min=0,call
             defaultActiveKey={[]}  
             onChange={collapseOnChange}
             style={disable?{backgroundColor: '#44bba4'}:{}}
-            />
+        />
     )
 }

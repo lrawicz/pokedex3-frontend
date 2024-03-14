@@ -4,18 +4,33 @@ import { useEffect, useState } from "react"
 import type { SliderSingleProps } from 'antd';
 
 type params = {
-    name:string,
+    dbName:string,
+    label:string,
     step?: number
     marks?: number[]
     min?:number,
-    max?:number
+    max?:number,
+    callback?:any
 }
 
-export const RangedCollapse: React.FC<params> = ({name="",step=5, marks=[0,60,80,120,150],min=0,max=150}) =>{
+export const RangedCollapse: React.FC<params> = ({ dbName,label,step=5, marks=[],min=0,max=150,callback}) =>{
     
     let [enable, setEnable]= useState(false)
     let [options, setOptions]= useState<BaseOptionType[]>([])
-
+    let [rangeValue, setRangeValue] = useState([min,max])
+    let SliderChange=(value:any)=>{
+        callback(dbName,"value",value)
+        setRangeValue(value)
+    }
+    let collapseOnChange = (value:any)=>{
+        if(JSON.stringify(value) == "[]"){
+            setEnable(false)
+            callback(dbName,false)
+        }else{
+            setEnable(true)
+            callback(dbName,"value",rangeValue)
+        }
+    }
     const marksSet: SliderSingleProps['marks'] = marks.reduce((acc:any, curr) => {
         acc[curr.toString()] = curr.toString();
         return acc;
@@ -23,10 +38,10 @@ export const RangedCollapse: React.FC<params> = ({name="",step=5, marks=[0,60,80
 
     let items:any = [{
         key: '1',
-        label: name,
+        label: label,
         children: 
             <Flex justify="center">
-                <Slider range={true} max={max} min={min} step={step} marks={marksSet} defaultValue={[min,max]}  style={{width:"80%"}}></Slider>
+                <Slider onChange={SliderChange}range={true} max={max} min={min} step={step} marks={marksSet} defaultValue={[min,max]}  style={{width:"80%"}}></Slider>
             </Flex>
 
     }]
@@ -34,7 +49,7 @@ export const RangedCollapse: React.FC<params> = ({name="",step=5, marks=[0,60,80
         <Collapse 
             items={items}  
             defaultActiveKey={[]}  
-            onChange={()=>setEnable(!enable)}
+            onChange={collapseOnChange}
             style={enable?{backgroundColor: '#44bba4'}:{}}
         />
     )

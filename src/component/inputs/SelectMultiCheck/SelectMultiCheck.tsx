@@ -3,7 +3,7 @@ import { BaseOptionType } from "antd/es/select"
 import { useEffect, useState } from "react"
 
 type params = {
-    key:string,
+    dbName:string,
     label:string,
     span?:number,
     urlSource?:string,
@@ -12,22 +12,23 @@ type params = {
     callback?:any
 }
 
-export const SelectMultiCheck: React.FC<params> = ({key,label,span=6, urlSource=`${process.env.API_URL}/effects`,selected,setSelected,callback}) =>{
+export const SelectMultiCheck: React.FC<params> = ({dbName,label,span=6, urlSource=`${process.env.API_URL}/effects`,callback}) =>{
     
     let [enable, setEnable]= useState(false)
+    let [selected, setSelected]= useState([])
     let [options, setOptions]= useState<BaseOptionType[]>([])
 
     let onSelectChange = (value:any,key:any)=>{
-        setSelected(value)
-        callback(key,"ids",value)
+        setSelected(key)
+        callback(dbName,"ids",key)
     }
     let collapseOnChange = (value:any)=>{
         if(JSON.stringify(value) == "[]"){
             setEnable(false)
-            callback(key,false)
+            callback(dbName,"ids",false)
         }else{
             setEnable(true)
-            callback(key,"ids",false)
+            callback(dbName,"ids",selected)
         }
     }
     useEffect(()=>{
@@ -43,9 +44,9 @@ export const SelectMultiCheck: React.FC<params> = ({key,label,span=6, urlSource=
                 let tmp_options = [...options]
                 let tmp_func
                 if(typeof data[0] == "string"){
-                    tmp_func = (item:string)=>{tmp_options =([...tmp_options, {label: item, value: item}])}
+                    tmp_func = (item:string)=>{tmp_options =([...tmp_options, {label: item, value: item,key:item}])}
                 }if (typeof data[0] == "object" ) {
-                    tmp_func = (item:any)=>{tmp_options =([...tmp_options, {label: item.name, value: item.id}])}
+                    tmp_func = (item:any)=>{tmp_options =([...tmp_options, {label: item.name, value: item.name, key:item.id}])}
                     
                 }{
                 data.map(tmp_func)

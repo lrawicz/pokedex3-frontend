@@ -4,37 +4,39 @@ import { SelectMultiCheck } from "../inputs/SelectMultiCheck/SelectMultiCheck"
 import { useEffect, useState } from "react"
 import Column from "antd/es/table/Column"
 
-export const Abilities: React.FC<any> = ({sendToParent}) => {
-    let [selectNames, setSelectNames] = useState([])
-    let [selectTrigger, setSelectTrigger] = useState([])
-    let [selectTarget, setSelectTarget] = useState([])
-    let [selectEffect, setSelectEffect] = useState([])
+export const Abilities: React.FC<any> = ({ callback}) => {
+    
     let [abilities, setAbilities] = useState([])
     let [selectedAbilities, setSelectedAbilities] = useState([])
     const [value, setValue] = useState('');
     const rowSelection = {};
-
-
+    let [data,setData] = useState({})
+    let callFromChild = (key:string,type:string, value:any)=>{ 
+      let tmp
+      if (value){
+        tmp = {...data, [key]: value}
+      }else{
+        tmp = {...data}
+        delete tmp[key]
+      }
+      setData(tmp)
+    }
 
     function refreshData(){
-        let url = `${process.env.REACT_APP_API_URL}/abilities`;
-        let filter:any = {}
-        if(selectNames.length > 0) filter["names"] = selectNames
-        if(selectTrigger.length > 0) filter["triggers"] = selectTrigger
-        if(selectTarget.length > 0) filter["targets"] = selectTarget
-        if(selectEffect.length > 0) filter["effects"] = selectEffect
-
-        if (Object.keys(filter).length > 0) {
-            url += "?filter=" + JSON.stringify(filter)
+        console.log(data)
+        let url = `${process.env.REACT_APP_API_URL}/abilities`
+        if(JSON.stringify(data)!= "{}" ){
+          url += `?filter=${JSON.stringify(data)}`
         }
+        console.log(url)
         fetch(url).then(res => res.json()).then(data => {
             setAbilities(data)
             let selected = data.map((ability:any) => ability.id)
             setSelectedAbilities(selected)
-            sendToParent(selected)
+            callback("abilities",selected)
         })
     }
-    useEffect(() => {refreshData()}, [selectNames, selectTrigger, selectTarget, selectEffect])
+    useEffect(() => {refreshData()}, [data])
     return(
         <>
         <Row>
@@ -45,41 +47,42 @@ export const Abilities: React.FC<any> = ({sendToParent}) => {
             
             <Row>
               <Col span={8}>
-                <SelectMultiCheck key={"trigger"} label={"trigger"} urlSource={`${process.env.REACT_APP_API_URL}/triggers`}
-                  selected={selectTrigger} setSelected={setSelectTrigger}/>
+                <SelectMultiCheck dbName={"triggers"} label={"trigger"} urlSource={`${process.env.REACT_APP_API_URL}/triggers`}
+                  callback={callFromChild} />
               </Col>
               <Col span={8}>
-                <SelectMultiCheck key={"target"} label={"target"} urlSource={`${process.env.REACT_APP_API_URL}/targets`}
-                  selected={selectTarget} setSelected={setSelectTarget}/>
+                <SelectMultiCheck dbName={"targets"} label={"target"} urlSource={`${process.env.REACT_APP_API_URL}/targets`}
+                  callback={callFromChild}  />
               </Col>
               <Col span={8}>
-              <SelectMultiCheck key={"effect"} label={"effect"} urlSource={`${process.env.REACT_APP_API_URL}/effects`}
-                  selected={selectEffect} setSelected={setSelectEffect}/>
+              <SelectMultiCheck dbName={"effects"} label={"effect"} urlSource={`${process.env.REACT_APP_API_URL}/effects`}
+                  callback={callFromChild} />
 
               </Col>
 
             </Row>
           </Col>
           <Col style={{width:"50%"}}>
-          <Table 
-            rowKey={"id"}
-            dataSource={abilities}
-            scroll={{ x: 2000, y: 500 }}
-            
-            rowSelection={{
-              type: "checkbox",
-              selectedRowKeys: selectedAbilities,
-              onSelect: (record:any, selected:any, selectedRows:any, nativeEvent:any) => {
-                let selectedRowKeys = selectedRows.map((row:any) => row.id);
-                sendToParent(selectedRowKeys);setSelectedAbilities(selectedRowKeys)
-              }, 
-              onSelectAll: (selectedBool:Boolean, selectedRows:any, changeRows:any) => {
-                let selected:any =  selectedBool? abilities.map((row:any) => row.id): []
-                sendToParent(selected);
-                setSelectedAbilities(selected)
-              },
-            }}
-          >
+            <Table 
+              rowKey={"id"}
+              dataSource={abilities}
+              scroll={{ x: 2000, y: 500 }}
+              
+              rowSelection={{
+                type: "checkbox",
+                selectedRowKeys: selectedAbilities,
+                onSelect: (record:any, selected:any, selectedRows:any, nativeEvent:any) => {
+                  let selectedRowKeys = selectedRows.map((row:any) => row.id);
+                  callback("abilities",selectedRowKeys);
+                  setSelectedAbilities(selectedRowKeys)
+                }, 
+                onSelectAll: (selectedBool:Boolean, selectedRows:any, changeRows:any) => {
+                  let selected:any =  selectedBool? abilities.map((row:any) => row.id): []
+                  callback("abilities",selected);
+                  setSelectedAbilities(selected)
+                },
+              }}
+            >
             <Column title="Name" dataIndex="name" key="name" width={"200px"}/>
             <Column title="flavorText" dataIndex="flavorText" key="flavorText" />
           </Table>
