@@ -6,9 +6,9 @@ import Column from "antd/es/table/Column"
 
 export const Abilities: React.FC<any> = ({ callback,generation}) => {
   
-    let [abilities, setAbilities] = useState([])
+    let [abilitiesByMechanic, setAbilitiesByMechanic] = useState([])
+    let [abilitiesByName ,setAbilitiesByName] = useState([])
     let [selectedAbilities, setSelectedAbilities] = useState([])
-    let [dataSource ,setDataSource] = useState([])
     const [value, setValue] = useState('');
     const rowSelection = {};
     let [data,setData] = useState({})
@@ -28,7 +28,7 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
       let url = `${process.env.REACT_APP_API_URL}/abilities?filter=${JSON.stringify(tmp)}`
       console.log(url)
       fetch(url).then(res => res.json()).then(data => {
-          setAbilities(data)
+          setAbilitiesByMechanic(data)
           let selected = data.map((ability:any) => ability.id)
           setSelectedAbilities(selected)
           callback("abilities",selected)
@@ -42,10 +42,10 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
         onChange={e => {
           const currValue = e.target.value;
           setValue(currValue);
-          const filteredData = abilities.filter((entry:any) =>
+          const filteredData = abilitiesByMechanic.filter((entry:any) =>
             entry.name.includes(currValue)
           );
-          setDataSource(filteredData);
+          setAbilitiesByName(filteredData);
         }}
       />
     );
@@ -61,15 +61,24 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
             
             <Row>
               <Col span={8}>
-                <SelectMultiCheck dbName={"triggers"} label={"trigger"} urlSource={`${process.env.REACT_APP_API_URL}/triggers`}
+                <SelectMultiCheck 
+                  dbName={"triggers"} 
+                  label={"trigger"} 
+                  urlSource={`${process.env.REACT_APP_API_URL}/triggers`}
                   callback={callFromChild} />
               </Col>
               <Col span={8}>
-                <SelectMultiCheck dbName={"targets"} label={"target"} urlSource={`${process.env.REACT_APP_API_URL}/targets`}
+                <SelectMultiCheck 
+                  dbName={"targets"} 
+                  label={"target"} 
+                  urlSource={`${process.env.REACT_APP_API_URL}/targets`}
                   callback={callFromChild}  />
               </Col>
               <Col span={8}>
-              <SelectMultiCheck dbName={"effects"} label={"effect"} urlSource={`${process.env.REACT_APP_API_URL}/effects`}
+              <SelectMultiCheck 
+                  dbName={"effects"} 
+                  label={"effect"} 
+                  urlSource={`${process.env.REACT_APP_API_URL}/effects`}
                   callback={callFromChild} />
 
               </Col>
@@ -79,7 +88,7 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
           <Col style={{width:"50%"}}>
             <Table 
               rowKey={"id"}
-              dataSource={dataSource.length ? dataSource : abilities}
+              dataSource={abilitiesByName.length ? abilitiesByName : abilitiesByMechanic}
               scroll={{ x: 2000, y: 500 }}
               
               rowSelection={{
@@ -91,11 +100,11 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
                   setSelectedAbilities(selectedRowKeys)
                 }, 
                 onSelectAll: (selectedBool:Boolean, selectedRows:any, changeRows:any) => {
-                  let selected:any =  selectedBool? abilities.map((row:any) => row.id): []
+                  let selected:any =  selectedBool? abilitiesByMechanic.map((row:any) => row.id): []
                   if(selectedBool){
-                    selected = dataSource.length ? 
-                              dataSource.map((row:any) => row.id) :
-                              abilities.map((row:any) => row.id);
+                    selected = abilitiesByName.length ? 
+                              abilitiesByName.map((row:any) => row.id) :
+                              abilitiesByMechanic.map((row:any) => row.id);
                   }else{
                       selected= []
                   }
