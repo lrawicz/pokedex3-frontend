@@ -17,9 +17,19 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
         setMoveList(moves)
       })},[data])
     let callFromChild = (key:string,type:string, value:any)=>{ 
-        let tmp
+        let tmp:any
         if (value){
-          tmp = {...data, [key]: {type:type,value:value}}
+          if(type=="ids"){
+            tmp = {...data, [key]: {type:type,value:value}}
+            //tmp = {...data, [key]: value.map((item:any) => item.key)}
+
+              //tmp = {...data, [key]: ({type:type,value:value.map((item:any) => item.key)}||[])}
+          }
+          if(type=="value"){
+            tmp = {...data, [key]: value.map((item:any) => item.key)}
+
+            tmp = {...data, [key]: {type:type,value:value}}
+          }
         }else{
           tmp = {...data}
           delete tmp[key]
@@ -63,22 +73,22 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
           <Row>
             <Col span={6} children={<RangedCollapse dbName="power" min={0} max={255} marks={[40,120,200]} label="power" callback={callFromChild}/>}/>
             <Col span={6} children={ <SelectMultiCheck dbName="type" label="type"  callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/pokemon/types`}  />}/>
-            <Col span={6} children={<RangedCollapse dbName="accuracy" label="accuracy" min={0} max={100} marks={[40,80]}step={5} callback={callFromChild} />}/>
+            <Col span={6} children={<RangedCollapse dbName="accuracy" label="accuracy" min={0} max={100} marks={[30,50,70,90]}step={5} callback={callFromChild} />}/>
             <Col span={6} children={ <SelectMultiCheck dbName="damageClass" label="damageClass" callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/moves/getDamageClass`} />}/>
           </Row>
 
           <Row>
             <Col span={6} children={<SelectMultiCheck dbName="target" label="target" callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/moves/getTargetTypes`} />}/>
-            <Col span={6} children={<InputNumberCheck dbName="priority" label="priority" step={1} min={-7} max={8} callback={callFromChild}/>} />
-            <Col span={6} children={<InputNumberCheck dbName="CritRate" label="CritRate" min={0} max={100} callback={callFromChild}/>}/>
-            <Col span={6} children={<InputNumberCheck dbName="pp" label="pp"  callback={callFromChild}/> }/>
+            <Col span={6} children={<RangedCollapse dbName="priority" label="priority" step={1} marks={[-7,0,8]} min={-7} max={8} callback={callFromChild}/>} />
+            <Col span={6} children={<RangedCollapse dbName="CritRate" label="indice de critico" step={1} min={0} max={6} marks={[0,3,6]} callback={callFromChild}/>}/>
+            <Col span={6} children={<RangedCollapse dbName="pp" label="pp"  min={1} max={40} step={5} marks={[1,20,40]}callback={callFromChild}/> }/>
           </Row>
           
           <Row>
-            <Col span={6} children={<InputNumberCheck dbName="minHits" label="minHits"  min={1} max={10} callback={callFromChild}/>}/>
-            <Col span={6} children={<InputNumberCheck dbName="maxHits" label="maxHits"  callback={callFromChild} min={1} max={10}/>}/>
-            <Col span={6} children={<InputNumberCheck dbName="minTurns" label="minTurns"  callback={callFromChild} min={1} max={20}/>}/>
-            <Col span={6} children={<InputNumberCheck dbName="maxTurns" label="maxTurns"  callback={callFromChild} min={1} max={20}/>}/>
+            <Col span={6} children={<RangedCollapse dbName="minHits" label="minHits"  min={1} max={10} callback={callFromChild}/>}/>
+            <Col span={6} children={<RangedCollapse dbName="maxHits" label="maxHits"  callback={callFromChild} min={1} max={10}/>}/>
+            <Col span={6} children={<RangedCollapse dbName="minTurns" label="minTurns"  callback={callFromChild} min={1} max={20}/>}/>
+            <Col span={6} children={<RangedCollapse dbName="maxTurns" label="maxTurns"  callback={callFromChild} min={1} max={20}/>}/>
           </Row>
     
           <Row>
@@ -91,8 +101,8 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
           <Row>
             <Col span={6} children={<SelectMultiCheck dbName="ailment" label="ailment"  callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/moves/getAilments`}/>}/>
             <Col span={6} children={<InputNumberCheck dbName="ailmentChance" label="ailmentChance" callback={callFromChild} min={0} max={100}/>}/>
-            <Col span={6} children={<InputNumberCheck dbName="statChanges" label="statChanges"  callback={callFromChild} />}/> {/*revisar*/}
-            <Col span={6} children={<InputNumberCheck dbName="statChance" label="statChance" callback={callFromChild} min={0} max={100}/>}/>
+            {/*<Col span={6} children={<InputNumberCheck dbName="metaStatChanges" label="statChanges"  callback={callFromChild} />}/> {/*revisar*/}
+            <Col span={6} children={<InputNumberCheck dbName="metaStatChance" label="statChance" callback={callFromChild} min={0} max={100}/>}/>
           </Row>
     </>
       )
@@ -121,30 +131,31 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
     return(<>
       <Row >
         <Col span={12}>
-        <Table 
-          rowKey={"id"}
-          dataSource={moveList} columns={columns}
-          scroll={{ x: 150, y: 500 }}
-          rowSelection={{
-            type: "checkbox",
-            selectedRowKeys: selectedMoves,
-            onSelect: (record:any, selected:any, selectedRows:any, nativeEvent:any) => {
-              let selectedRowKeys = selectedRows.map((row:any) => row.id);
-              callback("abilities",selectedRowKeys);
-              setSelectedMoves(selectedRowKeys)
-            }, 
-            onSelectAll: (selectedBool:Boolean, selectedRows:any, changeRows:any) => {
-              let selected:any =  selectedBool? moveList.map((row:any) => row.id): []
-              callback("abilities",selected);
-              setSelectedMoves(selected)
-            },
-          }}
-          
-          />
-        </Col>
-        <Col span={12}>
           {paremetersDOM()}
         </Col>
+        <Col span={12}>
+          <Table 
+            rowKey={"id"}
+            dataSource={moveList} columns={columns}
+            scroll={{ x: 150, y: 500 }}
+            rowSelection={{
+              type: "checkbox",
+              selectedRowKeys: selectedMoves,
+              onSelect: (record:any, selected:any, selectedRows:any, nativeEvent:any) => {
+                let selectedRowKeys = selectedRows.map((row:any) => row.id);
+                callback("abilities",selectedRowKeys);
+                setSelectedMoves(selectedRowKeys)
+              }, 
+              onSelectAll: (selectedBool:Boolean, selectedRows:any, changeRows:any) => {
+                let selected:any =  selectedBool? moveList.map((row:any) => row.id): []
+                callback("abilities",selected);
+                setSelectedMoves(selected)
+              },
+            }}
+            
+            />
+        </Col>
+
       </Row>
 
     </>)

@@ -15,7 +15,7 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
     let callFromChild = (key:string,type:string, value:any)=>{    
       let tmp
       if (value){
-        tmp = {...data, [key]: value.map((item:any) => item.key)}
+        tmp = {...data, [key]: value}
       }else{
         tmp = {...data}
         delete tmp[key]

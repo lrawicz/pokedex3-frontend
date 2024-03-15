@@ -18,9 +18,9 @@ export const SelectMultiCheck: React.FC<params> = ({dbName,label,span=6, urlSour
     let [selected, setSelected]= useState([])
     let [options, setOptions]= useState<BaseOptionType[]>([])
 
-    let onSelectChange = (value:any,key:any)=>{
-        setSelected(key)
-        callback(dbName,"ids",key)
+    let onSelectChange = (value:any,items:any)=>{
+        setSelected(value)
+        callback(dbName,"ids",items.map((item:any)=>item.key))
     }
     let collapseOnChange = (value:any)=>{
         if(JSON.stringify(value) == "[]"){
