@@ -1,14 +1,18 @@
-.poke-item-list {
+  .poke-item-list {
+    position: relative;
+    background:"white";
+  }
+
+  #poke-id{
+    position: absolute;
+    top: 0;
     font-size: 16px; /* Tamaño de fuente por defecto */
     transition: font-size 0.2s; /* Transición suave */
   }
-
-  /* Cambio de tamaño al hacer hover */
-  .poke-item-list:hover {
-    font-size: 20px; /* Tamaño de fuente al hacer hover */
-       
+  .poke-name {
+    font-size: 16px; /* Tamaño de fuente por defecto */
+    transition: font-size 0.2s; /* Transición suave */
   }
-
 
   .poke-img {
     width: 30%;
@@ -18,4 +22,11 @@
   /* Cambio de tamaño al hacer hover */
   .poke-item-list:hover .poke-img {
     width: 50%;
+  }
+  .poke-item-list:hover .poke-name {
+    font-size: 20px;
+  }
+  /* change poke id font-size*/
+  .poke-item-list:hover {
+    font-size: 22px;
   }

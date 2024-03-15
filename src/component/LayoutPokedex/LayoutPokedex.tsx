@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, List, Menu, Select, theme } from 'antd';
+import { Breadcrumb, Layout, List, Menu, Row, Select, theme } from 'antd';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
 import { DefaultOptionType } from 'antd/es/select';
 import Flex from 'antd/es/flex'
@@ -127,13 +127,24 @@ const LayoutPokedex: React.FC = () => {
         }
 
         <Sider  
-        trigger={null} style={{overflow: 'auto',height:"90vh", width:"20%", background:"grey"}}collapsible collapsed={false}>
-          <List>
+          trigger={null} 
+          collapsible 
+          width={250}
+          collapsed={false} collapsedWidth={0} //TODO: fix this
+          style={{overflow: 'auto',height:"90vh",  background:"grey"}} 
+        >
+          <List >
             {pokemons.map((pokemon:any) => 
-            <List.Item className='poke-item-list'>
-                <img  className='poke-img'
-                src={`./sprites2/${pokemon.name}.png`}/>              
-              {pokemon.id}-{pokemon.name}
+            <List.Item className='poke-item-list' style={{background:"white",height:"100%"}} key={pokemon.id}>
+              <Flex justify='flex-end' style={{position:"absolute",width:"100%"}}>
+                <div style={{paddingRight:"15px"}}>{ pokemon.id}  </div>
+              </Flex>
+              <Row>
+                <img  className='poke-img' src={`./sprites2/${pokemon.name}.png`}/>              
+                <Flex className='poke-name' align='flex-end'>
+                  {pokemon.name.slice(0)[0].toUpperCase()+pokemon.name.slice(1)}
+                </Flex>
+              </Row>
               </List.Item>)}
           </List>
         </Sider>
