@@ -35,7 +35,6 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
     function refreshData(){
       let tmp = {...data, generation: generation}
       let url = `${process.env.REACT_APP_API_URL}/abilities?filter=${JSON.stringify(tmp)}`
-      console.log(url)
       fetch(url).then(res => res.json()).then(data => {
           setAbilitiesByMechanic(data)
           let selected = data.map((ability:any) => ability.id)
