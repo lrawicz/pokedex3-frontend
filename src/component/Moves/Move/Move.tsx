@@ -34,7 +34,6 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
           tmp = {...data}
           delete tmp[key]
         }
-        console.log(tmp)
         setData(tmp)
     }
     const columns = [
@@ -42,29 +41,6 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
         {title: 'power',dataIndex: 'power',key: 'power'},
         {title: 'type',dataIndex: 'type',key: 'type',},
         {title: 'damageClass',dataIndex: 'damageClass',key: 'damageClass',},
-    ];
-      
-    const dataSource = [
-        {
-          id: '1',
-          name: 'Mike',
-          power: 32,
-          type: '10 Downing Street',
-        },
-        {
-          id: '2',
-          name: 'John',
-          power: 42,
-          type: '10 Downing Street',
-        },
-    ];
-    const items: any = [
-        {
-          key: '1',
-          label: 'Results',
-          children: <Table key={"id"} dataSource={moveList} columns={columns}/>,
-        },
-
     ];
 
     let paremetersDOM = ()=>{
@@ -92,10 +68,13 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
           </Row>
     
           <Row>
-            <Col span={6} style={{background:"red"}} children={<InputNumberCheck dbName="drain" label="drain" callback={callFromChild} min={0} max={100}/>}/>
-            <Col span={6} children={<RangedCollapse dbName="metaHealing" label="healing" min={0} max={100} step={1} marks={[0,50,100]} callback={callFromChild} />}/>
-            <Col span={6} style={{background:"red"}} children={<InputNumberCheck dbName="recoil" label="recoil"  callback={callFromChild} min={0} max={100}/>}/>
-            <Col span={6} children={<RangedCollapse dbName="metaFlinchChance" label="flinchChance" min={0} max={100} step={1} marks={[0,50,100]} callback={callFromChild} />}/>
+            <Col span={6} children={<RangedCollapse dbName="metaDrain" label="drain"  min={0} max={100} marks={[0,50,100]} callback={callFromChild}/>}/>
+            <Col span={6} children={<RangedCollapse dbName="metaHealing" label="healing" min={0} max={100} marks={[0,50,100]} callback={callFromChild} />}/>
+            <Col span={6} children={<RangedCollapse dbName="metaDrain" label="recoil" min={0} max={100} marks={[0,50,100]} callback={callFromChild} 
+                  intermidateFunction={(value:number[])=>value.map((item)=>item*-1).sort((a,b)=>a-b)}
+                />}
+            />
+            <Col span={6} children={<RangedCollapse dbName="metaFlinchChance" label="flinchChance" min={0} max={100} marks={[0,50,100]} callback={callFromChild} />}/>
           </Row>
 
           <Row>

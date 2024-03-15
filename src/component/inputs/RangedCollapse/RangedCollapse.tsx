@@ -10,16 +10,19 @@ type params = {
     marks?: number[]
     min?:number,
     max?:number,
-    callback?:any
+    callback?:any,
+    intermidateFunction?:any
 }
 
-export const RangedCollapse: React.FC<params> = ({ dbName,label,step=5, marks=[],min=0,max=150,callback}) =>{
+export const RangedCollapse: React.FC<params> = ({ dbName,label,step=5, marks=[],min=0,max=150,callback,intermidateFunction=undefined}) =>{
     
     let [enable, setEnable]= useState(false)
     let [options, setOptions]= useState<BaseOptionType[]>([])
     let [rangeValue, setRangeValue] = useState([min,max])
     let SliderChange=(value:any)=>{
-        callback(dbName,"value",value)
+        let tmp = intermidateFunction?intermidateFunction(value):value
+        console.log(tmp)
+        callback(dbName,"value",tmp)
         setRangeValue(value)
     }
     let collapseOnChange = (value:any)=>{

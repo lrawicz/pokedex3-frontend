@@ -41,15 +41,12 @@ const LayoutPokedex: React.FC = () => {
   let [pokemons,setPokemons] = useState([])
 
   const sendToParent = (key:string,value:any) => {
-    console.log(key, value)
-    let tmp  = {...filterData, [key]: value}
-    setFilterData(tmp)
+    setFilterData({...filterData, [key]: value})
   }
   let updatePokemons = async()=>{
     let url = `${process.env.REACT_APP_API_URL}/pokemons?`
     let query = [`filter=${JSON.stringify(filterData)}`,`generation=${generation}`,`limit=10`, `offset=0`]
     url = url + query.join("&")
-    console.log(url)
     fetch(url).then(res => res.json()).then(data => {
       setPokemons(data.result)
     })
