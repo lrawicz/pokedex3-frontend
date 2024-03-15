@@ -1,13 +1,18 @@
 import { Collapse } from "antd"
 import { Move } from "./Move/Move";
+import { useState } from "react";
 
 
 type params = {
   callback:any
 }
 export const Moves:  React.FC<params>= ({callback}) => {
+    let [moves,setMoves] = useState({"move01":[],"move02":[],"move03":[],"move04":[]})
     let sentToParent = (key:string,type:string, value:any)=>{
-        callback("moves",value)
+        let tmp = {...moves,[key]:value}
+        console.log(tmp)
+        setMoves(tmp)
+        callback("moves",tmp)
     }
     const items: any = [
         {
