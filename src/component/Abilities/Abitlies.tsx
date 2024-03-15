@@ -92,6 +92,13 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
                 }, 
                 onSelectAll: (selectedBool:Boolean, selectedRows:any, changeRows:any) => {
                   let selected:any =  selectedBool? abilities.map((row:any) => row.id): []
+                  if(selectedBool){
+                    selected = dataSource.length ? 
+                              dataSource.map((row:any) => row.id) :
+                              abilities.map((row:any) => row.id);
+                  }else{
+                      selected= []
+                  }
                   callback("abilities",selected);
                   setSelectedAbilities(selected)
                 },
