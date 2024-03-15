@@ -7,7 +7,7 @@ type params = {
 }
 export const Moves:  React.FC<params>= ({callback}) => {
     let sentToParent = (key:string,type:string, value:any)=>{
-
+        callback("moves",value)
     }
     const items: any = [
         {

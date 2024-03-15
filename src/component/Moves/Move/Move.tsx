@@ -48,9 +48,9 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
         <>        
           <Row>
             <Col span={6} children={<RangedCollapse dbName="power" min={0} max={255} marks={[40,120,200]} label="power" callback={callFromChild}/>}/>
-            <Col span={6} children={ <SelectMultiCheck dbName="type" label="type"  callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/pokemon/types`}  />}/>
+            <Col span={6} children={<SelectMultiCheck dbName="type" label="type"  callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/pokemon/types`}  />}/>
             <Col span={6} children={<RangedCollapse dbName="accuracy" label="accuracy" min={0} max={100} marks={[30,50,70,90]}step={5} callback={callFromChild} />}/>
-            <Col span={6} children={ <SelectMultiCheck dbName="damageClass" label="damageClass" callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/moves/getDamageClass`} />}/>
+            <Col span={6} children={<SelectMultiCheck dbName="damageClass" label="damageClass" callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/moves/getDamageClass`} />}/>
           </Row>
 
           <Row>
@@ -122,12 +122,12 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
               selectedRowKeys: selectedMoves,
               onSelect: (record:any, selected:any, selectedRows:any, nativeEvent:any) => {
                 let selectedRowKeys = selectedRows.map((row:any) => row.id);
-                callback("abilities",selectedRowKeys);
+                callback(`move0${moveId}`,"ids",selectedRows.map((row:any) => row.id));
                 setSelectedMoves(selectedRowKeys)
               }, 
               onSelectAll: (selectedBool:Boolean, selectedRows:any, changeRows:any) => {
                 let selected:any =  selectedBool? moveList.map((row:any) => row.id): []
-                callback("abilities",selected);
+                callback(`move0${moveId}`,"ids",selected);
                 setSelectedMoves(selected)
               },
             }}
