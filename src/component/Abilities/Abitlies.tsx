@@ -8,6 +8,7 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
   
     let [abilities, setAbilities] = useState([])
     let [selectedAbilities, setSelectedAbilities] = useState([])
+    let [dataSource ,setDataSource] = useState([])
     const [value, setValue] = useState('');
     const rowSelection = {};
     let [data,setData] = useState({})
@@ -33,6 +34,22 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
           callback("abilities",selected)
       })
     }
+
+    const FilterByNameInput = (
+      <Input
+        placeholder="Name"
+        value={value}
+        onChange={e => {
+          const currValue = e.target.value;
+          setValue(currValue);
+          const filteredData = abilities.filter((entry:any) =>
+            entry.name.includes(currValue)
+          );
+          setDataSource(filteredData);
+        }}
+      />
+    );
+
     useEffect(() => {refreshData()}, [data,generation])
     return(
         <>
@@ -62,7 +79,7 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
           <Col style={{width:"50%"}}>
             <Table 
               rowKey={"id"}
-              dataSource={abilities}
+              dataSource={dataSource.length ? dataSource : abilities}
               scroll={{ x: 2000, y: 500 }}
               
               rowSelection={{
@@ -80,7 +97,7 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
                 },
               }}
             >
-            <Column title="Name" dataIndex="name" key="name" width={"200px"}/>
+            <Column title={FilterByNameInput} dataIndex="name" key="name" width={"200px"}/>
             <Column title="flavorText" dataIndex="flavorText" key="flavorText" />
           </Table>
           </Col>
