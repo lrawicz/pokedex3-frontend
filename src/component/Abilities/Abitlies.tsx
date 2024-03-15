@@ -7,9 +7,9 @@ import Column from "antd/es/table/Column"
 export const Abilities: React.FC<any> = ({ callback,generation}) => {
   
     let [abilitiesByMechanic, setAbilitiesByMechanic] = useState([])
-    let [abilitiesByName ,setAbilitiesByName] = useState([])
+    let [abilitiesByName, setAbilitiesByName] = useState([])
     let [selectedAbilities, setSelectedAbilities] = useState([])
-    const [value, setValue] = useState('');
+    const [nameSearch, setNameSearch] = useState('');
     const rowSelection = {};
     let [data,setData] = useState({})
     let callFromChild = (key:string,type:string, value:any)=>{    
@@ -22,7 +22,16 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
       }
       setData(tmp)
     }
-
+    function seachByName(value:any,listAbilities:any =undefined){ 
+      setNameSearch(value)
+      if(!listAbilities){
+        listAbilities = [...abilitiesByMechanic]
+      }
+      const filteredData = listAbilities.filter((entry:any) =>
+        entry.name.includes(value)
+      );
+      setAbilitiesByName(filteredData);
+    }
     function refreshData(){
       let tmp = {...data, generation: generation}
       let url = `${process.env.REACT_APP_API_URL}/abilities?filter=${JSON.stringify(tmp)}`
@@ -31,6 +40,7 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
           setAbilitiesByMechanic(data)
           let selected = data.map((ability:any) => ability.id)
           setSelectedAbilities(selected)
+          seachByName(nameSearch,data)
           callback("abilities",selected)
       })
     }
@@ -38,15 +48,8 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
     const FilterByNameInput = (
       <Input
         placeholder="Name"
-        value={value}
-        onChange={e => {
-          const currValue = e.target.value;
-          setValue(currValue);
-          const filteredData = abilitiesByMechanic.filter((entry:any) =>
-            entry.name.includes(currValue)
-          );
-          setAbilitiesByName(filteredData);
-        }}
+        value={nameSearch}
+        onChange={e => {seachByName(e.target.value)}}
       />
     );
 
