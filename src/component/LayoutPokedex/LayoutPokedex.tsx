@@ -55,7 +55,7 @@ const LayoutPokedex: React.FC = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  useEffect(() => {updatePokemons()}, [filterData])
+  useEffect(() => {updatePokemons()}, [filterData,generation])
 
   return (
     <Layout>

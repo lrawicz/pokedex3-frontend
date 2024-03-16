@@ -52,7 +52,7 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
       />
     );
 
-    useEffect(() => {refreshData()}, [data,generation])
+    useEffect(() => {refreshData()}, [data])
     return(
         <>
         <Row>

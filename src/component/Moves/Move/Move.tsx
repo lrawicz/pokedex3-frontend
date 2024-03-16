@@ -11,6 +11,8 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
     let [data,setData] = useState([{}])
     let [moveList,setMoveList] = useState([{}])
     let [selectedMoves,setSelectedMoves] = useState([])
+    let [nameSearch,setNameSearch] = useState('')
+    let [movesByName,setMovesByName] = useState([])
 
     useEffect(()=>{
       fetch(`${process.env.REACT_APP_API_URL}/moves?filter=${JSON.stringify(data)}`).then((res)=>res.json()).then((moves)=>{
@@ -36,8 +38,26 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
         }
         setData(tmp)
     }
+    function seachByName(value:any,listAbilities:any =undefined){ 
+      setNameSearch(value)
+      if(!listAbilities){
+        listAbilities = [...moveList]
+      }
+      const filteredData = listAbilities.filter((entry:any) =>
+        entry.name.includes(value)
+      );
+      setMovesByName(filteredData);
+    }
+    const FilterByNameInput = (
+      <Input
+        placeholder="Name"
+        value={nameSearch}
+        onChange={e => {seachByName(e.target.value)}}
+      />
+    );
+
     const columns = [
-        {title: 'Name',dataIndex: 'name',key: 'name',},
+        {title: FilterByNameInput,dataIndex: 'name',key: 'name',},
         {title: 'power',dataIndex: 'power',key: 'power'},
         {title: 'type',dataIndex: 'type',key: 'type',},
         {title: 'damageClass',dataIndex: 'damageClass',key: 'damageClass',},
@@ -115,7 +135,9 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
         <Col span={12}>
           <Table 
             rowKey={"id"}
-            dataSource={moveList} columns={columns}
+            dataSource={movesByName.length ? movesByName : moveList}
+            
+            columns={columns}
             scroll={{ x: 150, y: 500 }}
             rowSelection={{
               type: "checkbox",
