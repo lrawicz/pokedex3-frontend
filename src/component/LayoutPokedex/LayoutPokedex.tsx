@@ -45,7 +45,7 @@ const LayoutPokedex: React.FC = () => {
   }
   let updatePokemons = async()=>{
     let url = `${process.env.REACT_APP_API_URL}/pokemons?`
-    let query = [`filter=${JSON.stringify(filterData)}`,`generation=${generation}`,`limit=10`, `offset=0`]
+    let query = [`filter=${JSON.stringify(filterData)}`,`limit=10`, `offset=0`]
     url = url + query.join("&")
     fetch(url).then(res => res.json()).then(data => {
       setPokemons(data.result)
@@ -74,7 +74,7 @@ const LayoutPokedex: React.FC = () => {
 
           <Select  style={{ width: 150 }}
             //value={{title: `generation ${generation}`, value: {generation}}}
-            onChange={(value,item) => {setGeneration(value)}}
+            onChange={(value,item) => {setGeneration(value);sendToParent("generation",value)}}
             options={Array.from({length: 9}, (x, i) => i).map((key) => ({
                 key:`${key+1}`, value: `${key+1}`, label: `generation ${key+1}`
               }))
