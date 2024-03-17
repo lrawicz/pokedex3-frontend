@@ -27,9 +27,9 @@ export const TableWithFeatures: React.FC<params> = ({originalData,columns=[],cal
         if(listItems.length == 0){
           setListByName(originalData);
         }else{
-          listItems = listItems?listItems:[...originalData]
-          let tmp = listItems.filter((entry:any) =>entry.name.includes(value))
-          setListByName(tmp);
+          setListByName(
+            listItems.filter((entry:any) =>entry.name.includes(value))
+          );
         }
       }
       
