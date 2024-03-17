@@ -9,12 +9,10 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
   
     let [abilitiesByMechanic, setAbilitiesByMechanic] = useState([])
     let [selectedAbilities, setSelectedAbilities] = useState([])
-    const [nameSearch, setNameSearch] = useState('');
     const rowSelection = {};
     let [data,setData] = useState({})
 
     let callbackTable = (value:any)=>{
-      console.log(value)
       setSelectedAbilities(value)
       callback("abilities",value)
     }

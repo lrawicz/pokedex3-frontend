@@ -11,18 +11,22 @@ type params = {
 export const TableWithFeatures: React.FC<params> = ({originalData,columns=[],callback}) => {
 
     let [nameSearch,setNameSearch] = useState('')
-    let [listByName,setListByName] = useState([...originalData])
+    let [listByName,setListByName] = useState([])
     let [selectedItems,setSelectedItems] = useState([])
 
 
-    useEffect(()=>{callback(selectedItems)},[listByName])
+    useEffect(()=>{
+      callback(selectedItems)},
+      [listByName,originalData])
 
     function seachByName(value:any,listItems:any =undefined){ 
-      setNameSearch(value)
+        setNameSearch(value)
         console.log(value)
         listItems = listItems?listItems:[...originalData]
         let tmp = listItems.filter((entry:any) =>entry.name.includes(value))
         console.log(listItems.filter((entry:any) =>entry.name.includes(value)))
+        console.log("TEST")
+        console.log(tmp)
         setListByName(tmp);
       }
       
@@ -55,6 +59,7 @@ export const TableWithFeatures: React.FC<params> = ({originalData,columns=[],cal
             onSelectAll: (selectedBool:Boolean, selectedRows:any, changeRows:any) => {
               let selected:any =  selectedBool? originalData.map((row:any) => row.id): []
               if(selectedBool){
+                console.log(listByName)
                 selected = listByName.length ? 
                           listByName.map((row:any) => row.id) :
                           originalData.map((row:any) => row.id);
