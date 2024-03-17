@@ -6,9 +6,10 @@ type params = {
     originalData:any,
     callback:any
     columns:any
+    scroll?:any
 }
 
-export const TableWithFeatures: React.FC<params> = ({originalData,columns=[],callback}) => {
+export const TableWithFeatures: React.FC<params> = ({originalData,columns=[],callback,scroll={x:2000,y:500}}) => {
 
     let [nameSearch,setNameSearch] = useState('')
     let [listByName,setListByName] = useState([])
@@ -16,19 +17,19 @@ export const TableWithFeatures: React.FC<params> = ({originalData,columns=[],cal
 
 
     useEffect(()=>{
+      seachByName(nameSearch)
       callback(selectedItems);
-      seachByName("")
       },
-      [listByName,originalData]
+      [originalData]
     )
       
     function seachByName(value:any,listItems:any =[]){ 
         setNameSearch(value)
-        if(listItems.length == 0){
+        if(value ==""){
           setListByName(originalData);
         }else{
           setListByName(
-            listItems.filter((entry:any) =>entry.name.includes(value))
+            originalData.filter((entry:any) =>entry.name.includes(value))
           );
         }
       }
@@ -49,7 +50,7 @@ export const TableWithFeatures: React.FC<params> = ({originalData,columns=[],cal
           <Table  columns={columns} 
           rowKey={"id"}
           dataSource={listByName.length ? listByName : originalData}
-          scroll={{ x: 2000, y: 500 }}
+          scroll={scroll}
 
           rowSelection={{
             type: "checkbox",

@@ -48,6 +48,7 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
                 columns={columns}
                 originalData={moveList}
                 callback={callbackTable}
+                scroll={{x:600,y:500}}
           />
         </Col>
 
