@@ -16,18 +16,21 @@ export const TableWithFeatures: React.FC<params> = ({originalData,columns=[],cal
 
 
     useEffect(()=>{
-      callback(selectedItems)},
-      [listByName,originalData])
-
-    function seachByName(value:any,listItems:any =undefined){ 
+      callback(selectedItems);
+      seachByName("")
+      },
+      [listByName,originalData]
+    )
+      
+    function seachByName(value:any,listItems:any =[]){ 
         setNameSearch(value)
-        console.log(value)
-        listItems = listItems?listItems:[...originalData]
-        let tmp = listItems.filter((entry:any) =>entry.name.includes(value))
-        console.log(listItems.filter((entry:any) =>entry.name.includes(value)))
-        console.log("TEST")
-        console.log(tmp)
-        setListByName(tmp);
+        if(listItems.length == 0){
+          setListByName(originalData);
+        }else{
+          listItems = listItems?listItems:[...originalData]
+          let tmp = listItems.filter((entry:any) =>entry.name.includes(value))
+          setListByName(tmp);
+        }
       }
       
 
