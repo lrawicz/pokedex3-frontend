@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, List, Menu, Row, Select, theme } from 'antd';
+import { Breadcrumb, Layout, List, Menu, Row, Select, Table, theme } from 'antd';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
 import { DefaultOptionType } from 'antd/es/select';
 import Flex from 'antd/es/flex'
@@ -10,6 +10,7 @@ import { STATS } from '../STATS/STATS';
 import { Moves } from '../Moves/Moves';
 import { Abilities } from '../Abilities/Abitlies';
 import './LayoutPokedex.css'
+import Column from 'antd/es/table/Column';
 
 const { Header, Content, Sider } = Layout;
 // load css file
@@ -35,6 +36,7 @@ const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOu
 );
 
 const LayoutPokedex: React.FC = () => {
+  let [pagination,setPagination] = useState({limit:10000,offset:0})
   let [filterData,setFilterData] = useState({})
 
   let [generation,setGeneration] = useState(9)
@@ -45,7 +47,7 @@ const LayoutPokedex: React.FC = () => {
   }
   let updatePokemons = async()=>{
     let url = `${process.env.REACT_APP_API_URL}/pokemons?`
-    let query = [`filter=${JSON.stringify(filterData)}`,`limit=10`, `offset=0`]
+    let query = [`filter=${JSON.stringify(filterData)}`,`limit=${pagination.limit}`, `offset=${pagination.offset}`]
     url = url + query.join("&")
     fetch(url).then(res => res.json()).then(data => {
       setPokemons(data.result)
@@ -59,46 +61,22 @@ const LayoutPokedex: React.FC = () => {
 
   return (
     <Layout>
-      <Header style={{ display: 'flex', alignItems: 'center' }}>
-        <div className="demo-logo" />
-        
-
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={['2']}
-          style={{ flex: 1, minWidth: 0 }}
-        >
-          
-          <Flex justify='flex-end' style={{width:"100%" }}>
-
-          <Select  style={{ width: 150 }}
-            //value={{title: `generation ${generation}`, value: {generation}}}
-            onChange={(value,item) => {setGeneration(value);sendToParent("generation",value)}}
-            options={Array.from({length: 9}, (x, i) => i).map((key) => ({
-                key:`${key+1}`, value: `${key+1}`, label: `generation ${key+1}`
-              }))
-            }
-          />
+        <Header style={{ display: 'flex', alignItems: 'center' }}>
+          <Flex justify='center' align='center' style={{width:"100%" }}>
+            <p style={{color:"White"}}>Generation: </p> 
+            <Select  style={{ width: 150 }}
+              onChange={(value,item) => {setGeneration(value);sendToParent("generation",value)}}
+              options={Array.from({length: 9}, (x, i) => i).map((key) => ({
+                  key:`${key+1}`, value: `${key+1}`, label: `generation ${key+1}`
+                }))
+              }
+            />
           </Flex>
-        </Menu>
-      </Header>
+        </Header>
       <Layout>
-        <Sider width={200} style={{ background: colorBgContainer }}>
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
-            style={{ height: '100%', borderRight: 0 }}
-            items={items2}
-          />
-        </Sider>
 
         <Layout style={{ padding: '0 24px 24px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>pokedex</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb>
+        
           <Content
             style={{
               padding: 24,
@@ -132,20 +110,29 @@ const LayoutPokedex: React.FC = () => {
           collapsed={false} collapsedWidth={0} //TODO: fix this
           style={{overflow: 'auto',height:"90vh",  background:"grey"}} 
         >
-          <List >
-            {pokemons.map((pokemon:any) => 
-            <List.Item className='poke-item-list' style={{background:"white",height:"100%"}} key={pokemon.id}>
-              <Flex justify='flex-end' style={{position:"absolute",width:"100%"}}>
-                <div style={{paddingRight:"15px"}}>{ pokemon.id}  </div>
-              </Flex>
-              <Row>
-                <img  className='poke-img' src={`./sprites2/${pokemon.name}.png`}/>              
-                <Flex className='poke-name' align='flex-end'>
-                  {pokemon.name.slice(0)[0].toUpperCase()+pokemon.name.slice(1)}
-                </Flex>
-              </Row>
-              </List.Item>)}
-          </List>
+          
+          <Table dataSource={pokemons} showHeader={false}>;
+            <Column  
+                title={"pokemon"}  
+                render= {(record:any,index:number|undefined)=>
+                  <>
+                  <Flex justify='center' style={{width:"100%"}}>
+                    <Flex justify='flex-end' style={{position:"absolute",width:"100%"}}>
+                    <div style={{paddingRight:"15px"}}>{ record.id}  </div>
+                  </Flex>
+                  <Row>
+                    <img  className='poke-img' src={`./sprites2/${record.name}.png`}/>              
+                    <Flex className='poke-name' align='flex-end'>
+                      {record.name.slice(0)[0].toUpperCase()+record.name.slice(1)}
+                    </Flex>
+                  </Row>
+                  </Flex>
+                  </>
+                }
+                />;
+          </Table>
+
+          
         </Sider>
       </Layout>
     </Layout>

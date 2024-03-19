@@ -85,7 +85,6 @@ export const MoveParameters:  React.FC<params>  = ({callback}) => {
         <Row>
           <Col span={6} children={<SelectMultiCheck dbName="metaAilment" label="ailment"  callback={callFromChild} urlSource={`${process.env.REACT_APP_API_URL}/moves/getAilments`}/>}/>
           <Col span={6} children={<RangedCollapse dbName="metaAilmentChance" label="ailmentChance" min={0} max={100} marks={[0,50,100]}callback={callFromChild}  />}/>
-          <Col span={6} style={{background:"red"}} children={<InputNumberCheck dbName="metaStatChanges" label="statChanges"  callback={callFromChild} />}/> {/*revisar*/}
           <Col span={6} children={<RangedCollapse dbName="metaStatChance" label="statChance" min={0} max={100} marks={[0,50,100]} callback={callFromChild} />}/>
         </Row>
   </>
