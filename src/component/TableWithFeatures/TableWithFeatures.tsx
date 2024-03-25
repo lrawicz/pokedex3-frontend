@@ -15,9 +15,13 @@ export const TableWithFeatures: React.FC<params> = ({originalData,columns=[],cal
 
 
     useEffect(()=>{
-      callback(selectedItems);
       setSelectedItems(originalData.map((row:any) => row.id))
-      seachByName(nameSearch)
+      seachByName("")
+      if(originalData.length == 0){
+        callback(["NULL"])
+      }else{
+        callback(originalData.map((row:any) => row.id));
+      }
       },
       [originalData]
     )
