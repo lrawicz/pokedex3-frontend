@@ -1,4 +1,4 @@
-import { Checkbox, Col, Row } from "antd";
+import { Checkbox, Col, Row, Select } from "antd";
 import { SelectMultiCheck } from "../inputs/SelectMultiCheck/SelectMultiCheck";
 import { useState } from "react";
 
@@ -66,14 +66,45 @@ export const TabPokemon: React.FC<params> = ({callback}) => {
               onChange={(e)=>{
                 setMonotype(e.target.checked)
               }
-                }>
-                Monotype
-              </Checkbox>
+                }>Monotype</Checkbox>
             </Col>
         </Row>
-        isBaby
-        isLegendary
-        isMythical
+        <Row>
+          <Col>
+            isBaby <Select
+              style={{width:"100px"}}
+              options={[
+                {label:"true",value:"true"},
+                {label:"false",value:"false"},
+                {label:"null",value:"null"},
+                
+              ]}
+              />
+          </Col>
+          <Col>
+            isLegendary <Select
+              style={{width:"100px"}}
+              options={[
+                {label:"true",value:"true"},
+                {label:"false",value:"false"},
+                {label:"null",value:"null"},
+                
+              ]}
+              />
+          </Col>
+          <Col>
+            isMythical <Select
+              style={{width:"100px"}}
+              options={[
+                {label:"true",value:"true"},
+                {label:"false",value:"false"},
+                {label:"null",value:"null"},
+                
+              ]}
+              />
+          </Col>
+          
+        </Row>
         </>
     );
 }
