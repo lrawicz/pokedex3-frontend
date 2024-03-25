@@ -1,6 +1,4 @@
-import { Flex, Input, Row, Slider, Table } from "antd"
-import type { SliderSingleProps } from 'antd';
-import { RangedCollapse } from "../inputs/RangedCollapse/RangedCollapse";
+import {  Input, Table } from "antd"
 import { useEffect, useState } from "react";
 type params = {
     originalData:any,
@@ -17,8 +15,9 @@ export const TableWithFeatures: React.FC<params> = ({originalData,columns=[],cal
 
 
     useEffect(()=>{
-      seachByName(nameSearch)
       callback(selectedItems);
+      setSelectedItems(originalData.map((row:any) => row.id))
+      seachByName(nameSearch)
       },
       [originalData]
     )
@@ -63,7 +62,6 @@ export const TableWithFeatures: React.FC<params> = ({originalData,columns=[],cal
             onSelectAll: (selectedBool:Boolean, selectedRows:any, changeRows:any) => {
               let selected:any =  selectedBool? originalData.map((row:any) => row.id): []
               if(selectedBool){
-                console.log(listByName)
                 selected = listByName.length ? 
                           listByName.map((row:any) => row.id) :
                           originalData.map((row:any) => row.id);
