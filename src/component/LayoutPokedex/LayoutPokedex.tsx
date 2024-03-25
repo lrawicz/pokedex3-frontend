@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, List, Menu, Row, Select, Table, theme } from 'antd';
-import { ItemType } from 'antd/es/menu/hooks/useItems';
-import { DefaultOptionType } from 'antd/es/select';
+import {  Layout, Row, Select, Table, theme } from 'antd';
 import Flex from 'antd/es/flex'
 import Tabs from 'antd/es/tabs'
 import { STATS } from '../STATS/STATS';
@@ -11,29 +7,9 @@ import { Moves } from '../Moves/Moves';
 import { Abilities } from '../Abilities/Abitlies';
 import './LayoutPokedex.css'
 import Column from 'antd/es/table/Column';
+import { TabPokemon } from '../TabPokemon/TabPokemon';
 
 const { Header, Content, Sider } = Layout;
-// load css file
-
-const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-  (icon, index) => {
-    const key = String(index + 1);
-
-    return {
-      key: `sub${key}`,
-      icon: React.createElement(icon),
-      label: `subnav ${key}`,
-
-      children: new Array(4).fill(null).map((_, j) => {
-        const subKey = index * 4 + j + 1;
-        return {
-          key: subKey,
-          label: `option${subKey}`,
-        };
-      }),
-    };
-  },
-);
 
 const LayoutPokedex: React.FC = () => {
   let [pagination,setPagination] = useState({limit:10000,offset:0})
@@ -89,7 +65,7 @@ const LayoutPokedex: React.FC = () => {
             
             <Tabs
               items={[
-                {key: 'pokemon', label: 'pokemon'},
+                {key: 'pokemon', label: 'pokemon', children: <TabPokemon callback={sendToParent}/>},
                 {key: 'STATS', label: 'STATS', children: <STATS callback={sendToParent}/>},
                 {key: 'moves', label: 'moves', children: <Moves callback={sendToParent}/>},
                 {key: 'abilities', label: 'Abilities', children:  <Abilities callback={sendToParent} generation={generation}/>},
@@ -120,7 +96,7 @@ const LayoutPokedex: React.FC = () => {
                     <Flex justify='flex-end' style={{position:"absolute",width:"100%"}}>
                     <div style={{paddingRight:"15px"}}>{ record.id}  </div>
                   </Flex>
-                  <Row>
+                  <Row className='poke-row'>
                     <img  className='poke-img' src={`./sprites2/${record.name}.png`}/>              
                     <Flex className='poke-name' align='flex-end'>
                       {record.name.slice(0)[0].toUpperCase()+record.name.slice(1)}

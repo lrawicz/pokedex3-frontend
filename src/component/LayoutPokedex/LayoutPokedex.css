@@ -19,14 +19,10 @@
     transition: width 0.4s; /* Transición suave */
   }
 
-  /* Cambio de tamaño al hacer hover */
-  .poke-item-list:hover .poke-img {
-    width: 50%;
-  }
-  .poke-item-list:hover .poke-name {
+  .poke-row:hover .poke-name{
     font-size: 20px;
   }
-  /* change poke id font-size*/
-  .poke-item-list:hover {
-    font-size: 22px;
+  .poke-row:hover .poke-img{
+    width: 50%;
+
   }
