@@ -1,7 +1,5 @@
-import { Flex, Row, Slider } from "antd"
-import type { SliderSingleProps } from 'antd';
 import { RangedCollapse } from "../inputs/RangedCollapse/RangedCollapse";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 type params = {
   callback:any
 }

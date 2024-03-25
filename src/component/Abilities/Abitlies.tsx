@@ -1,8 +1,6 @@
-import { Col, Collapse, Flex, Input, Row, Select, Table } from "antd"
-import { BaseOptionType } from "antd/es/select"
+import { Col,  Row, } from "antd"
 import { SelectMultiCheck } from "../inputs/SelectMultiCheck/SelectMultiCheck"
 import { useEffect, useState } from "react"
-import Column from "antd/es/table/Column"
 import { TableWithFeatures } from "../TableWithFeatures/TableWithFeatures"
 
 export const Abilities: React.FC<any> = ({ callback,generation}) => {
@@ -49,30 +47,36 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
             </Row>
             
             <Row>
-              <Col span={8}>
+              <Col span={24}>
                 <SelectMultiCheck 
                   dbName={"triggers"} 
                   label={"trigger"} 
                   urlSource={`${process.env.REACT_APP_API_URL}/triggers`}
                   callback={callFromChild} />
               </Col>
-              <Col span={8}>
+            </Row>
+            <Row>
+
+              <Col span={24}>
                 <SelectMultiCheck 
                   dbName={"targets"} 
                   label={"target"} 
                   urlSource={`${process.env.REACT_APP_API_URL}/targets`}
                   callback={callFromChild}  />
               </Col>
-              <Col span={8}>
-              <SelectMultiCheck 
-                  dbName={"effects"} 
-                  label={"effect"} 
-                  urlSource={`${process.env.REACT_APP_API_URL}/effects`}
-                  callback={callFromChild} />
+            </Row>
+            <Row>
+
+              <Col span={24}>
+                <SelectMultiCheck 
+                    dbName={"effects"} 
+                    label={"effect"} 
+                    urlSource={`${process.env.REACT_APP_API_URL}/effects`}
+                    callback={callFromChild} />
 
               </Col>
+              </Row>
 
-            </Row>
           </Col>
           <Col style={{width:"50%"}}>
             <TableWithFeatures

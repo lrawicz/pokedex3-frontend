@@ -1,10 +1,8 @@
-import { Checkbox, Col, Collapse, Flex, Input, InputNumber, Row, Slider, Table } from "antd"
-import { InputNumberCheck } from "../../inputs/InputNumberCheck/InputNumberCheck";
-import { SelectMultiCheck } from "../../inputs/SelectMultiCheck/SelectMultiCheck";
+import { Tabs } from "antd"
 import { useEffect, useState } from "react";
-import { RangedCollapse } from "../../inputs/RangedCollapse/RangedCollapse";
 import { TableWithFeatures } from "../../TableWithFeatures/TableWithFeatures";
 import { MoveParameters } from "./MoveParameters";
+import type { TabsProps } from 'antd';
 type params = {
   callback:any,
   moveId:number
@@ -14,9 +12,7 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
     let [params,setParams] = useState({})
 
     useEffect(()=>{
-      console.log(JSON.stringify(params))
       fetch(`${process.env.REACT_APP_API_URL}/moves?filter=${JSON.stringify(params)}`).then((res)=>res.json()).then((moves)=>{
-        console.log(moves)
         setMoveList(moves)
       })
       },[params]
@@ -30,29 +26,31 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
     }
 
     const columns = [
-        {title: 'power',dataIndex: 'power',key: 'power'},
-        {title: 'type',dataIndex: 'type',key: 'type',},
-        {title: 'damageClass',dataIndex: 'damageClass',key: 'damageClass',},
+        {title: 'Power',dataIndex: 'power',key: 'power', width: '100px',},
+        {title: 'Type',dataIndex: 'type',key: 'type', width: '100px'},
+        {title: 'Damage class',dataIndex: 'damageClass',key: 'damageClass', width: '150px'},
+        {title: 'Flavor text',dataIndex: 'flavorText',key: 'flavorText',},
+    ];
+    
+    const items: TabsProps['items'] = [
+      {
+        key: '1',
+        label: 'Filters',
+        children: <MoveParameters callback={callbackParameters}/>,
+      },
+      {
+        key: '2',
+        label: 'Results',
+        children: 
+          <TableWithFeatures
+            columns={columns}
+            originalData={moveList}
+            callback={callbackTable}
+            scroll={{x:600,y:500}}
+          />,
+      }
     ];
 
 
-
-
-    return(<>
-      <Row >
-        <Col span={12}>
-          <MoveParameters callback={callbackParameters}/>
-        </Col>
-        <Col span={12}>
-          <TableWithFeatures
-                columns={columns}
-                originalData={moveList}
-                callback={callbackTable}
-                scroll={{x:600,y:500}}
-          />
-        </Col>
-
-      </Row>
-
-    </>)
+    return(<Tabs defaultActiveKey="1"  items={items} />)
 }

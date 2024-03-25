@@ -1,4 +1,4 @@
-import { Checkbox, Col, Collapse, Flex, InputNumber, Row, Select, Slider } from "antd"
+import {  Collapse, Select } from "antd"
 import { BaseOptionType } from "antd/es/select"
 import { useEffect, useState } from "react"
 
@@ -9,30 +9,30 @@ type params = {
     urlSource?:string,
     selected?: string[],
     setSelected?: any,
+    metaEnable?:boolean,
     callback?:any
 }
 
-export const SelectMultiCheck: React.FC<params> = ({dbName,label,span=6, urlSource=`${process.env.API_URL}/effects`,callback}) =>{
+export const SelectMultiCheck: React.FC<params> = ({dbName,label,span=6, urlSource=`${process.env.API_URL}/effects`,metaEnable=true,callback}) =>{
     
     let [enable, setEnable]= useState(false)
     let [selected, setSelected]= useState([])
     let [options, setOptions]= useState<BaseOptionType[]>([])
 
     let onSelectChange = (value:any,items:any)=>{
-        console.log(items)
         let tmp = items.map((item:any)=>{
             return Number(item.key) ? item.key : item.key.replace("+","\+")
         })
-        setSelected(value)
+        setSelected(items)
         callback(dbName,"ids",tmp)
     }
     let collapseOnChange = (value:any)=>{
-        if(JSON.stringify(value) == "[]"){
+        if(JSON.stringify(value) === "[]"){
             setEnable(false)
             callback(dbName,"ids",false)
         }else{
             setEnable(true)
-            callback(dbName,"ids",selected)
+            callback(dbName,"ids",selected.map((item:any)=>item.key))
         }
     }
     useEffect(()=>{
@@ -51,10 +51,8 @@ export const SelectMultiCheck: React.FC<params> = ({dbName,label,span=6, urlSour
                     tmp_func = (item:string)=>{tmp_options =([...tmp_options, {label: item, value: item,key:item}])}
                 }if (typeof data[0] == "object" ) {
                     tmp_func = (item:any)=>{tmp_options =([...tmp_options, {label: item.name, value: item.name, key:item.id}])}
-                    
-                }{
-                data.map(tmp_func)
                 }
+                data.map(tmp_func)
                 setOptions(tmp_options)
             }).catch((err)=>console.log(err))
     },[])  
@@ -76,6 +74,7 @@ export const SelectMultiCheck: React.FC<params> = ({dbName,label,span=6, urlSour
     }]
     return (
         <Collapse 
+            collapsible={metaEnable?"header":"disabled"} 
             items={items}  
             defaultActiveKey={[]}  
             onChange={collapseOnChange}

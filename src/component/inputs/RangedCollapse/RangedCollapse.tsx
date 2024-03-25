@@ -1,6 +1,6 @@
-import { Checkbox, Col, Collapse, Flex, InputNumber, Row, Select, Slider } from "antd"
+import { Collapse, Flex, Slider } from "antd"
 import { BaseOptionType } from "antd/es/select"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import type { SliderSingleProps } from 'antd';
 
 type params = {
@@ -17,11 +17,9 @@ type params = {
 export const RangedCollapse: React.FC<params> = ({ dbName,label,step=5, marks=[],min=0,max=150,callback,intermidateFunction=undefined}) =>{
     
     let [enable, setEnable]= useState(false)
-    let [options, setOptions]= useState<BaseOptionType[]>([])
     let [rangeValue, setRangeValue] = useState([min,max])
     let SliderChange=(value:any)=>{
         let tmp = intermidateFunction?intermidateFunction(value):value
-        console.log(tmp)
         callback(dbName,"value",tmp)
         setRangeValue(value)
     }

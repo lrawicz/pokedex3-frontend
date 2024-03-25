@@ -16,7 +16,6 @@ export const InputNumberCheck: React.FC<params> = ({label,dbName,max=255,min=0,c
     let [minValue,setMinValue] = useState(defaultValue?defaultValue[defaultValue[0]]:min)
     let [maxValue,setMaxValue] = useState(defaultValue?defaultValue[defaultValue[1]]:max)
     let changeMin = (value:number|null)=>{
-        console.log(dbName)
         callback(dbName,"value",[value,maxValue])
         setMinValue(Number(value))
     }
