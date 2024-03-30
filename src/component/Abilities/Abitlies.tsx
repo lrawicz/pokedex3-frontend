@@ -30,8 +30,6 @@ export const Abilities: React.FC<any> = ({ callback,generation}) => {
       let url = `${process.env.REACT_APP_API_URL}/abilities?filter=${JSON.stringify(tmp)}`
       fetch(url).then(res => res.json()).then(data => {
           setAbilitiesByMechanic(data)
-          let selected = data.map((ability:any) => ability.id)
-          callback("abilities",selected)
       })
     }
 
