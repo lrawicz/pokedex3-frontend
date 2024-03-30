@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {  Layout, Row, Select, Table, theme } from 'antd';
+import {  Layout, Row, Select, Spin, Table, theme } from 'antd';
 import Flex from 'antd/es/flex'
 import Tabs from 'antd/es/tabs'
 import { STATS } from '../STATS/STATS';
@@ -17,16 +17,18 @@ const LayoutPokedex: React.FC = () => {
 
   let [generation,setGeneration] = useState(9)
   let [pokemons,setPokemons] = useState([])
-
+  let [loadingPokemons,setLoadingPokemons] = useState(false)
   const sendToParent = (key:string,value:any) => {
     setFilterData({...filterData, [key]: value})
   }
   let updatePokemons = async()=>{
+    setLoadingPokemons(true)
     let url = `${process.env.REACT_APP_API_URL}/pokemons?`
     let query = [`filter=${JSON.stringify(filterData)}`,`limit=${pagination.limit}`, `offset=${pagination.offset}`]
     url = url + query.join("&")
     fetch(url).then(res => res.json()).then(data => {
       setPokemons(data.result)
+      setLoadingPokemons(false)
     })
   }
   const {
@@ -87,6 +89,7 @@ const LayoutPokedex: React.FC = () => {
           style={{overflow: 'auto',height:"90vh",  background:"grey"}} 
         >
           
+        <Spin spinning={loadingPokemons}>
           <Table dataSource={pokemons} showHeader={false}>;
             <Column  
                 title={"pokemon"}
@@ -108,6 +111,7 @@ const LayoutPokedex: React.FC = () => {
                 }
                 />;
           </Table>
+          </Spin>
 
           
         </Sider>
