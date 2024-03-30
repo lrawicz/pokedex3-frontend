@@ -89,14 +89,15 @@ const LayoutPokedex: React.FC = () => {
           
           <Table dataSource={pokemons} showHeader={false}>;
             <Column  
-                title={"pokemon"}  
+                title={"pokemon"}
+                className='poke-row'
                 render= {(record:any,index:number|undefined)=>
                   <>
                   <Flex justify='center' style={{width:"100%"}}>
                     <Flex justify='flex-end' style={{position:"absolute",width:"100%"}}>
                     <div style={{paddingRight:"15px"}}>{ record.id}  </div>
                   </Flex>
-                  <Row className='poke-row'>
+                  <Row>
                     <img  className='poke-img' src={`./sprites2/${record.name}.png`}/>              
                     <Flex className='poke-name' align='flex-end'>
                       {record.name.slice(0)[0].toUpperCase()+record.name.slice(1)}
