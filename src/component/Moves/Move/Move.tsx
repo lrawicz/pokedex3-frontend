@@ -41,6 +41,7 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
       {
         key: '2',
         label: 'Results',
+        forceRender:true,
         children: 
           <TableWithFeatures
             columns={columns}
