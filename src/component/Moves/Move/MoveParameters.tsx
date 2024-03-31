@@ -48,7 +48,7 @@ export const MoveParameters:  React.FC<params>  = ({callback}) => {
     //move_moveGrups Json
         //metaCategory String?
     return(
-      <>
+      <Col>
          
         <Row>
           <Col span={12} children={<RangedCollapse dbName="power" label="Power" min={0} max={255} marks={[40,120,200]}  callback={callFromChild}/>}/>
@@ -97,6 +97,6 @@ export const MoveParameters:  React.FC<params>  = ({callback}) => {
         <Col span={12} children={<RangedCollapse dbName="metaFlinchChance" label="FlinchChance" min={0} max={100} marks={[0,50,100]} callback={callFromChild} />}/>
           <Col span={12} children={<RangedCollapse dbName="metaStatChance" label="StatChance" min={0} max={100} marks={[0,50,100]} callback={callFromChild} />}/>
         </Row>
-  </>
+  </Col>
     )
   }

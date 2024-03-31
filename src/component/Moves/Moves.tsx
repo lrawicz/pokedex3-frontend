@@ -5,8 +5,9 @@ import { useState } from "react";
 
 type params = {
   callback:any
+  generation:number
 }
-export const Moves:  React.FC<params>= ({callback}) => {
+export const Moves:  React.FC<params>= ({callback,generation}) => {
     let [moves,setMoves] = useState({"move01":[],"move02":[],"move03":[],"move04":[]})
     let [data,setData] = useState([""])
     let sentToParent = (key:string,type:string, value:any)=>{
@@ -19,26 +20,26 @@ export const Moves:  React.FC<params>= ({callback}) => {
           key: '1',
           label: 'Move 1',
           style:  data.includes("1") ? {background: '#44bba4'} :{},
-          children: <Move moveId={1} callback={sentToParent} 
+          children: <Move moveId={1} generation={generation} callback={sentToParent} 
           />,
         },
         {
           key: '2',
           label: 'Move 2',
           style:  data.includes("2") ? {background: '#44bba4'} :{},
-          children: <Move moveId={2} callback={sentToParent} />,
+          children: <Move moveId={2} generation={generation} callback={sentToParent} />,
         },
         {
           key: '3',
           label: 'Move 3',
           style:  data.includes("3") ? {background: '#44bba4'} :{},
-          children: <Move moveId={3} callback={sentToParent} />,
+          children: <Move moveId={3} generation={generation} callback={sentToParent} />,
         },
         {
           key: '4',
           label: 'move 4',
           style:  data.includes("4") ? {background: '#44bba4'} :{},
-          children: <Move moveId={4} callback={sentToParent} />,
+          children: <Move moveId={4} generation={generation} callback={sentToParent} />,
         },
       ];
     return(

@@ -5,17 +5,18 @@ import { MoveParameters } from "./MoveParameters";
 import type { TabsProps } from 'antd';
 type params = {
   callback:any,
+  generation:number,
   moveId:number
 }
-export const Move:  React.FC<params>  = ({callback,moveId}) => {
+export const Move:  React.FC<params>  = ({callback,moveId,generation}) => {
     let [moveList,setMoveList] = useState([{}])
     let [params,setParams] = useState({})
 
     useEffect(()=>{
-      fetch(`${process.env.REACT_APP_API_URL}/moves?filter=${JSON.stringify(params)}`).then((res)=>res.json()).then((moves)=>{
+      fetch(`${process.env.REACT_APP_API_URL}/moves?filter=${JSON.stringify(params)}&generation=${generation}`).then((res)=>res.json()).then((moves)=>{
         setMoveList(moves)
       })
-      },[params]
+      },[params,generation]
     )
 
     let callbackTable = (value:any)=>{
@@ -36,7 +37,7 @@ export const Move:  React.FC<params>  = ({callback,moveId}) => {
       {
         key: '1',
         label: 'Filters',
-        children: <MoveParameters callback={callbackParameters}/>,
+        children: <MoveParameters  callback={callbackParameters}/>,
       },
       {
         key: '2',

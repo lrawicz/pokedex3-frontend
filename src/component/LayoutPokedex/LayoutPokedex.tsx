@@ -69,7 +69,7 @@ const LayoutPokedex: React.FC = () => {
               items={[
                 {key: 'pokemon', label: 'pokemon', children: <TabPokemon callback={sendToParent}/>},
                 {key: 'STATS', label: 'STATS', children: <STATS callback={sendToParent}/>},
-                {key: 'moves', label: 'moves', children: <Moves callback={sendToParent}/>},
+                {key: 'moves', label: 'moves', children: <Moves generation={generation} callback={sendToParent}/>},
                 {key: 'abilities', label: 'Abilities', children:  <Abilities callback={sendToParent} generation={generation}/>},
               ]}
             />

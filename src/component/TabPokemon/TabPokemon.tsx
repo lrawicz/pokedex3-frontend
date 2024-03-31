@@ -25,7 +25,7 @@ export const TabPokemon: React.FC<params> = ({callback}) => {
           delete tmp[key]
         }
         setData(tmp)
-        callback(tmp)
+        callback("general",tmp)
     }
     return(
         
@@ -64,7 +64,11 @@ export const TabPokemon: React.FC<params> = ({callback}) => {
             <Checkbox
               checked ={monotype} 
               onChange={(e)=>{
-                setMonotype(e.target.checked)
+                setMonotype(e.target.checked);
+                let tmp = {...data, "monotype": e.target.checked};
+                setData( tmp);
+                callback("general",tmp);
+
               }
                 }>Monotype</Checkbox>
             </Col>
@@ -73,6 +77,8 @@ export const TabPokemon: React.FC<params> = ({callback}) => {
           <Col>
             isBaby <Select
               style={{width:"100px"}}
+              disabled={true}
+
               options={[
                 {label:"true",value:"true"},
                 {label:"false",value:"false"},
@@ -84,6 +90,8 @@ export const TabPokemon: React.FC<params> = ({callback}) => {
           <Col>
             isLegendary <Select
               style={{width:"100px"}}
+              disabled={true}
+
               options={[
                 {label:"true",value:"true"},
                 {label:"false",value:"false"},
@@ -94,6 +102,7 @@ export const TabPokemon: React.FC<params> = ({callback}) => {
           </Col>
           <Col>
             isMythical <Select
+              disabled={true}
               style={{width:"100px"}}
               options={[
                 {label:"true",value:"true"},
